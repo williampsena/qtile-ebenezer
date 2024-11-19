@@ -2,12 +2,7 @@ name: Deploy Python Package
 run-name: Deploy Python Package in [${{ github.ref_name }}] @${{ github.actor }}
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   code-quality:
@@ -25,9 +20,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pipenv
-
-      - name: Install Dependencies
-        run: pipenv install --dev
 
       - name: Install dependencies
         run: make install

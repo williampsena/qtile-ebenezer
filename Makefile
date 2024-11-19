@@ -38,4 +38,8 @@ truncate-logs:
 	truncate -s0 ~/.local/share/qtile/qtile.log 
 
 logs:
-	 cat ~/.local/share/qtile/qtile.log
+	cat ~/.local/share/qtile/qtile.log
+
+deploy:
+	$(PIPENV) run python setup.py sdist bdist_wheel
+	$(PIPENV) run twine upload dist/*
