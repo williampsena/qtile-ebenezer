@@ -1,0 +1,82 @@
+applications:
+  icons:
+    window: 
+    
+    # Web Browsers
+    zen_browser: 
+    firefox:  
+    chrome: 
+    chromium: 
+    brave: 
+    edge: 
+    navigator: 󰖟
+
+    # File Managers
+    pcmanfm: 
+    thunar: 
+    dolphin: 
+    files: 
+
+    # Text Editors
+    code: 
+    vim: 
+    emacs: 
+    sublime_text: 
+
+    # Terminals
+    alacritty:  
+    gnome_terminal: 
+    kitty: 
+    terminal: 
+
+    # Media Players
+    vlc: ﲪ
+    mpv:  
+    spotify:  
+
+    # Video Editors
+    kdenlive: 
+
+    # Office Applications
+    libreoffice_writer: 
+    libreoffice_calc: 
+    libreoffice_impress: 
+
+    # System Utilities
+    htop: 
+    gparted: 󰋊
+    system_monitor: 󰨇
+    pamac: 󰏓
+
+    # Communication
+    slack: 
+    discord: 
+    telegram: 
+
+    # Design Tools
+    gimp: 
+    inkscape: 
+    blender:  
+    krita: 
+
+    # Databases
+    mongo: 
+    redis: 
+    postgres: 
+    mysql: 
+    mariadb: 
+
+    # Games
+    lutris: 
+    steam: 
+
+    # Apps
+    wine: 
+
+    # Virtualization
+    virtualbox: 
+
+    # Desktop (fallback)
+    gnome: 
+    kde: 
+    plasma: 

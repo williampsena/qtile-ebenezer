@@ -1,0 +1,4 @@
+# Gitleaks Configuration
+
+[extend]
+useDefault = true
