@@ -17,6 +17,7 @@ setup(
         "psutil>=6.1.0",
         "pyyaml>=6.0.2",
         "cairocffi>=1.7.1",
+        "typer[all]",
     ],
     entry_points={
         "console_scripts": [
