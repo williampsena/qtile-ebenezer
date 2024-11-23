@@ -46,10 +46,3 @@ deploy:
 	$(PIPENV) run bump2version patch
 	$(PIPENV) run python setup.py sdist bdist_wheel
 	$(PIPENV) run twine upload dist/*
-
-docs:
-	rm -rf .docs
-	sphinx-build -b html ebenezer .docs/html
-
-deploy-docs:
-	curl -X POST -d "" -H "Authorization: Token $(RTD_TOKEN)" $(RTD_API_URL)
