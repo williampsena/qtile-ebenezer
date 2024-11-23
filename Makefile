@@ -41,6 +41,6 @@ logs:
 	cat ~/.local/share/qtile/qtile.log
 
 deploy:
-	$(PIPENV) run python setup.py sdist bdist_wheel
 	$(PIPENV) run bump2version patch
+	$(PIPENV) run python setup.py sdist bdist_wheel
 	$(PIPENV) run twine upload dist/*

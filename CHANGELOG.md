@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.2] - 2024-11-24
+### Added
+- Incremented version number to 0.1.2.
+
 ## [0.1.1] - 2024-11-23
 ### Added
 - Initial release.
