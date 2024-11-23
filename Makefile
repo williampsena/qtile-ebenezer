@@ -42,5 +42,5 @@ logs:
 
 deploy:
 	$(PIPENV) run python setup.py sdist bdist_wheel
-	$(PIPENV) bump2version patch
+	$(PIPENV) run bump2version patch
 	$(PIPENV) run twine upload dist/*
