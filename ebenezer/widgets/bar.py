@@ -1,5 +1,35 @@
 from typing import Any, List
 
+"""
+This module provides functions to build a customized bar for the Qtile window manager
+using various widgets defined in the ebenezer package.
+
+Functions:
+    build_bar(settings: AppSettings) -> bar.Bar:
+        Constructs a bar with widgets specified in the settings.
+
+    build_fallback_bar(settings: AppSettings) -> List[widget.base._Widget]:
+        Constructs a fallback bar with a predefined set of widgets.
+
+    _build_separator(_: AppSettings, args: dict) -> widget.Sep:
+        Constructs a separator widget.
+
+    _build_prompt(settings: AppSettings, kwargs: dict) -> widget.Prompt:
+        Constructs a prompt widget with default and custom arguments.
+
+    _build_task_list_widget(settings: AppSettings, args: dict) -> widget.TaskList:
+        Constructs a task list widget.
+
+    _build_widget(settings: AppSettings, widget_type: str, args: dict) -> widget.base._Widget:
+        Constructs a widget based on the widget type and arguments provided.
+
+    _build_widgets(settings: AppSettings) -> List[widget.base._Widget]:
+        Constructs a list of widgets based on the settings.
+
+Constants:
+    WIDGETS (dict): A dictionary mapping widget types to their respective builder functions.
+"""
+
 from libqtile import bar, widget
 from libqtile.log_utils import logger
 
@@ -48,7 +78,7 @@ def build_fallback_bar(settings: AppSettings):
     ]
 
 
-def _build_separator(settings: AppSettings, args: dict):
+def _build_separator(_: AppSettings, args: dict):
     return widget.Sep(**args)
 
 

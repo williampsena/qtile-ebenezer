@@ -1,3 +1,23 @@
+"""
+keys.py
+-------
+
+This module provides functions to build key bindings for Qtile.
+
+Functions:
+    _build_key_spawn(settings: AppSettings, binding: AppSettingsKeyBinding):
+        Builds a key binding for spawning a command based on the provided settings and key binding configuration.
+
+    _build_key_spawn_command(settings: AppSettings, binding: AppSettingsKeyBinding):
+        Builds a key binding for spawning a command from the settings commands based on the provided settings and key binding configuration.
+
+    build_keys(settings: AppSettings) -> List[Any]:
+        Builds a list of key bindings based on the provided settings.
+
+    _build_keys_from_config(settings: AppSettings, keys: List[Any]) -> List[Any]:
+        Builds key bindings from the configuration and appends them to the provided keys list.
+"""
+
 import os
 from typing import Any, List
 
@@ -12,6 +32,16 @@ from ebenezer.widgets.volume import setup_volume_keys
 
 
 def _build_key_spawn(settings: AppSettings, binding: AppSettingsKeyBinding):
+    """
+    Builds a key binding for spawning a command based on the provided settings and key binding configuration.
+
+    Args:
+        settings (AppSettings): The application settings containing environment configurations.
+        binding (AppSettingsKeyBinding): The key binding configuration.
+
+    Returns:
+        Key: The configured key binding for spawning the command.
+    """
     return _build_key(
         _format_keybinding(settings, binding.keys),
         lazy_spawn(binding.command),
@@ -186,8 +216,15 @@ ACTIONS = {
 
 
 def build_keys(settings: AppSettings):
-    mod = settings.environment.modkey
+    """
+    Builds a list of key bindings based on the provided settings.
 
+    Args:
+        settings (AppSettings): The application settings containing key binding configurations.
+
+    Returns:
+        List[Any]: The list of configured key bindings.
+    """
     keys = setup_volume_keys(settings) + setup_backlight_keys(settings)
 
     keys = _build_keys_from_config(settings, keys)
@@ -196,6 +233,16 @@ def build_keys(settings: AppSettings):
 
 
 def _build_keys_from_config(settings: AppSettings, keys: List[Any]):
+    """
+    Builds key bindings from the configuration and appends them to the provided keys list.
+
+    Args:
+        settings (AppSettings): The application settings containing key binding configurations.
+        keys (List[Any]): The list of existing key bindings to be extended.
+
+    Returns:
+        List[Any]: The extended list of key bindings.
+    """
     for binding in settings.keybindings:
         action_callable = ACTIONS.get(binding.action)
         key = None
@@ -210,6 +257,16 @@ def _build_keys_from_config(settings: AppSettings, keys: List[Any]):
 
 
 def _build_key(keybinding: List[str], command):
+    """
+    Builds a key binding with the given key combination and command.
+
+    Args:
+        key_combination (List[str]): The key combination for the binding.
+        command (Any): The command to be executed.
+
+    Returns:
+        Key: The configured key binding.
+    """
     return Key(
         keybinding[:-1],
         keybinding[-1],
@@ -218,4 +275,14 @@ def _build_key(keybinding: List[str], command):
 
 
 def _format_keybinding(settings: AppSettings, keys: List[str]):
+    """
+    Formats the key binding by replacing placeholders with actual values.
+
+    Args:
+        settings (AppSettings): The application settings containing environment configurations.
+        keys (List[str]): The list of keys for the binding.
+
+    Returns:
+        List[str]: The formatted key binding.
+    """
     return [k.replace("$mod", settings.environment.modkey) for k in keys]

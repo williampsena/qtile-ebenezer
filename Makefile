@@ -27,7 +27,7 @@ check:
 	$(PIPENV) run qtile check
 
 test:
-	$(PIPENV) run pytest --maxfail=5 --disable-warnings
+	$(PIPENV) run pytest --cov=ebenezer --cov-report=term-missing --maxfail=5 --disable-warnings $(file)  $(args)
 
 format:
 	$(PIPENV) run autoflake --remove-all-unused-imports --in-place --recursive .
@@ -42,4 +42,5 @@ logs:
 
 deploy:
 	$(PIPENV) run python setup.py sdist bdist_wheel
+	$(PIPENV) bump2version patch
 	$(PIPENV) run twine upload dist/*

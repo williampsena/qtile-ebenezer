@@ -5,6 +5,38 @@ from ebenezer.widgets.helpers.args import build_widget_args
 
 
 def build_group_box(settings: AppSettings, kwargs: dict):
+    """
+    Build a GroupBox widget with the specified settings and additional arguments.
+
+    Args:
+        settings (AppSettings): An instance of AppSettings containing configuration values.
+        kwargs (dict): Additional keyword arguments to override default settings.
+
+    Returns:
+        widget.GroupBox: A configured GroupBox widget instance.
+
+    The default arguments include:
+        - margin_y (int): Vertical margin.
+        - margin_x (int): Horizontal margin.
+        - padding (int): Padding inside the widget.
+        - borderwidth (int): Width of the border.
+        - active (str): Color for active group.
+        - inactive (str): Color for inactive group.
+        - this_current_screen_border (str): Border color for the current screen's group.
+        - this_screen_border (str): Border color for the screen's group.
+        - other_current_screen_border (str): Border color for other screens' groups.
+        - highlight_color (str): Color for highlighting.
+        - highlight_method (str): Method of highlighting (e.g., "text").
+        - font (str): Font used for the widget.
+        - fontsize (int): Font size used for the widget.
+        - foreground (str): Foreground color.
+        - rounded (bool): Whether the corners are rounded.
+        - urgent_alert_method (str): Method for urgent alerts (e.g., "border").
+        - urgent_border (str): Border color for urgent alerts.
+
+    The `build_widget_args` function is used to merge the default arguments with any
+    additional arguments provided in `kwargs`.
+    """
     default_args = {
         "margin_y": 3,
         "margin_x": 3,

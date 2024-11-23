@@ -1,3 +1,14 @@
+"""
+environment.py
+--------------
+
+This module provides a class to manage environment settings for Qtile.
+
+Classes:
+    AppSettingsEnvironment:
+        Manages environment settings including modkey, browser, terminal, and other configurations.
+"""
+
 from libqtile.utils import guess_terminal
 
 from ebenezer.core.files import resolve_file_path
@@ -19,6 +30,12 @@ class AppSettingsEnvironment:
     github_notifications_token: str = ""
 
     def __init__(self, **kwargs: object):
+        """
+        Initializes the AppSettingsEnvironment with optional keyword arguments.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments to initialize the environment settings.
+        """
         self.modkey = str(kwargs.get("modkey", self.modkey))
         self.browser = str(kwargs.get("browser", self.browser))
         self.terminal = str(kwargs.get("terminal", self.terminal))

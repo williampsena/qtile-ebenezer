@@ -1,3 +1,15 @@
+"""
+lock_screen.py
+--------------
+
+This module provides a class to manage lock screen settings for Qtile.
+
+Classes:
+    AppSettingsLockScreen:
+        Manages lock screen settings including command, timeout, font, joke settings, and blur type.
+"""
+
+
 class AppSettingsLockScreen:
     command = ""
     timeout = 10
@@ -13,6 +25,12 @@ class AppSettingsLockScreen:
     blurtype = "0x5"
 
     def __init__(self, **kwargs):
+        """
+        Initializes the AppSettingsLockScreen with optional keyword arguments.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments to initialize the lock screen settings.
+        """
         self.command = kwargs.get("command", self.command)
         self.timeout = kwargs.get("timeout", str(self.timeout))
         self.font = kwargs.get("font", self.font)

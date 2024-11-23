@@ -5,6 +5,28 @@ from ebenezer.core.config.settings import AppSettings
 
 
 class FontIconTaskList(widget.TaskList):
+    """
+    A custom Qtile widget that extends the TaskList widget to provide additional
+    functionality for displaying task names with specific markup based on the
+    window state (minimized, maximized, floating, focused, etc.).
+
+    Methods
+    -------
+    get_taskname(window):
+        Returns the formatted task name for the given window, applying the appropriate
+        markup based on the window's state and other properties.
+
+    Parameters
+    ----------
+    window : Window
+        The window object for which the task name is being retrieved.
+
+    Returns
+    -------
+    str
+        The formatted task name with the appropriate markup applied.
+    """
+
     def get_taskname(self, window):
         state = ""
         markup_str = self.markup_normal
@@ -106,6 +128,16 @@ def _icon_replacement_parse_text(settings: AppSettings):
 
 
 def build_task_list_widget(settings: AppSettings, kwargs: dict):
+    """
+    Build a task list widget with the given settings and additional arguments.
+
+    Args:
+        settings (AppSettings): The application settings containing configuration for colors, fonts, etc.
+        kwargs (dict): Additional keyword arguments for customization.
+
+    Returns:
+        FontIconTaskList: An instance of FontIconTaskList configured with the provided settings.
+    """
     task_list_args = {
         "icon_size": 0,
         "margin_y": 4,

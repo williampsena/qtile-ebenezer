@@ -1,3 +1,14 @@
+"""
+colors.py
+---------
+
+This module provides a class to manage color settings for Qtile.
+
+Classes:
+    AppSettingsColors:
+        Manages color settings including foreground, background, and other color configurations.
+"""
+
 from typing import List
 
 
@@ -53,6 +64,12 @@ class AppSettingsColors:
     rofi_border_alt = "#9db4c0"
 
     def __init__(self, **kwargs):
+        """
+        Initializes the AppSettingsColors with optional keyword arguments.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments to initialize the color settings.
+        """
         self.theme = kwargs.pop("theme", None)
         self.raw = kwargs
         self._bind_colors(
@@ -108,11 +125,27 @@ class AppSettingsColors:
         )
 
     def get_color(self, color_name: str) -> str:
+        """
+        Retrieves the color value for the given color name.
+
+        Args:
+            color_name (str): The name of the color.
+
+        Returns:
+            str: The color value.
+        """
         if color_name.startswith("#"):
             return color_name
 
         return self.__dict__.get(color_name) or self.fg_normal
 
     def _bind_colors(self, args: dict, colors: List[str]):
+        """
+        Binds the color values to the class attributes.
+
+        Args:
+            args (dict): The dictionary of color values.
+            colors (List[str]): The list of color attribute names.
+        """
         for color in colors:
             setattr(self, color, args.get(color, getattr(self, color)))

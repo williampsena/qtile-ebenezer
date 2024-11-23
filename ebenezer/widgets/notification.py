@@ -31,6 +31,27 @@ def _notifications_actions(cmd: str):
 
 
 class DunstWidget(base.ThreadPoolText):
+    """
+    A widget to display the count of notifications using dunst.
+
+    Attributes:
+        defaults (list): Default configuration options for the widget.
+        count (int): The current count of notifications.
+        modal_confirm_cmd (str): Command to confirm modal actions.
+        animated (bool): Whether the bell icon should be animated.
+        bells_index (int): Index to track the current bell icon.
+        bells (list): List of bell icons.
+        foreground_zero (str): Foreground color when there are no notifications.
+        foreground_count (str): Foreground color when there are notifications.
+
+    Methods:
+        poll(): Updates the widget with the current notification count.
+        get_bell_icon(): Returns the current bell icon based on the animation setting.
+        get_notification_count(): Retrieves the current notification count from dunst.
+        show_notifications(): Displays the notification history.
+        clear_notifications(): Clears the notifications if there are any.
+    """
+
     defaults = [
         ("update_interval", 3, "Interval to update the notification count"),
     ]
@@ -101,6 +122,20 @@ class DunstWidget(base.ThreadPoolText):
 
 
 def build_notification_widget(settings: AppSettings, kwargs: dict):
+    """
+    Build a notification widget with the given settings and additional arguments.
+
+    Args:
+        settings (AppSettings): The application settings containing fonts and colors.
+        kwargs (dict): Additional keyword arguments to customize the widget.
+
+    Returns:
+        DunstWidget: An instance of the DunstWidget configured with the provided settings and arguments.
+
+    The function initializes default arguments for the widget, including text, font, fontsize, padding, and colors.
+    It then merges these default arguments with any additional arguments provided in kwargs, giving precedence to
+    the values in kwargs. The resulting arguments are used to create and return a DunstWidget instance.
+    """
     default_args = {
         "settings": settings,
         "default_text": "",

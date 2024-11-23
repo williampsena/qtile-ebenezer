@@ -9,6 +9,16 @@ from ebenezer.widgets.helpers.args import build_widget_args
 
 
 def build_volume_widget(settings: AppSettings, kwargs: dict):
+    """
+    Build a volume widget with the given settings and additional arguments.
+
+    Args:
+        settings (AppSettings): The application settings containing fonts, colors, and commands.
+        kwargs (dict): Additional arguments to customize the widget.
+
+    Returns:
+        widget.Volume: A configured volume widget instance.
+    """
     default_args = {
         "font": settings.fonts.font_icon,
         "fontsize": settings.fonts.font_icon_size,
@@ -60,19 +70,23 @@ def _volume_up(settings: AppSettings):
 
     @lazy.function
     def inner(qtile):
-        level = int(_get_current_volume(settings) or "0")
-
-        if level > 115:
-            return
-
-        _unmute(settings)
-
-        if volume_cmd:
-            run_shell_command(volume_cmd)
-
-        _push_volume_notification(settings, "󰝝 Volume")
+        _do_volume_up(volume_cmd, settings)
 
     return inner
+
+
+def _do_volume_up(volume_cmd: str | None, settings: AppSettings):
+    level = int(_get_current_volume(settings) or "0")
+
+    if level > 115:
+        return
+
+    _unmute(settings)
+
+    if volume_cmd:
+        run_shell_command(volume_cmd)
+
+    _push_volume_notification(settings, "󰝝 Volume")
 
 
 def _volume_down(settings: AppSettings):
@@ -80,12 +94,16 @@ def _volume_down(settings: AppSettings):
 
     @lazy.function
     def inner(qtile):
-        if volume_cmd:
-            run_shell_command(volume_cmd)
-
-        _push_volume_notification(settings, "󰝞 Volume")
+        _do_volume_down(volume_cmd, settings)
 
     return inner
+
+
+def _do_volume_down(volume_cmd: str, settings: AppSettings):
+    if volume_cmd:
+        run_shell_command(volume_cmd)
+
+    _push_volume_notification(settings, "󰝞 Volume")
 
 
 def _lazy_unmute(settings: AppSettings):
@@ -127,6 +145,24 @@ def _mute_toggle(settings: AppSettings):
 
 
 def setup_volume_keys(settings: AppSettings):
+    """
+    Sets up key bindings for volume and media control.
+
+    Args:
+        settings (AppSettings): The application settings object.
+
+    Returns:
+        list: A list of Key objects for volume and media control.
+
+    Key Bindings:
+        - XF86AudioRaiseVolume: Increase the volume.
+        - XF86AudioLowerVolume: Decrease the volume.
+        - XF86AudioMute: Toggle mute.
+        - XF86AudioMicMute: Toggle mute for the microphone.
+        - XF86AudioPlay: Play or pause the media player.
+        - XF86AudioNext: Skip to the next song.
+        - XF86AudioPrev: Go back to the previous song.
+    """
     return [
         Key(
             [],

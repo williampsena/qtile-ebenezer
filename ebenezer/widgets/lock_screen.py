@@ -67,7 +67,9 @@ def _get_joke_from_icanhazdadjoke(settings: AppSettings) -> Callable[[], str]:
 def _get_joke_from_reddit(settings: AppSettings) -> Callable[[], str]:
     def do_request():
         headers = {"Accept": "application/json"}
-        return requests.get(settings.lock_screen.reddit_joke_url).json()
+        return requests.get(
+            settings.lock_screen.reddit_joke_url, headers=headers
+        ).json()
 
     def inner():
         data = request_retry(do_request)
@@ -101,11 +103,11 @@ def _get_joke(settings: AppSettings) -> str:
         try:
             return joke_providers[joke_provider_key]()
         except Exception as e:
-            logger.warning(
-                f"error while trying to fetch jokes from {joke_provider_key}",
-                e,
-                exc_info=True,
-            )
+            # logger.warning(
+            #     f"error while trying to fetch jokes from {joke_provider_key}",
+            #     e,
+            #     exc_info=True,
+            # )
             next
 
     return "No jokes!"
@@ -145,8 +147,8 @@ def _build_joke_image(settings: AppSettings, joke: str, width: int, height: int)
     img.save(JOKE_OUTPUT_FILE)
 
 
-def _build_background(settings: AppSettings):
-    background = Image.open(OUTPUT_FILE)
+def _build_background(settings: AppSettings, output_file: str):
+    background = Image.open(output_file)
     width, height = background.size
 
     joke = _get_joke(settings)
@@ -184,7 +186,7 @@ def _prepare_lock_screen(settings: AppSettings):
         ]
     )
 
-    _build_background(settings)
+    _build_background(settings, OUTPUT_FILE)
 
 
 def lock_screen(settings: AppSettings):
@@ -198,6 +200,34 @@ def lock_screen(settings: AppSettings):
 
 
 def run_i3_lock(settings: AppSettings):
+    """
+    Executes the i3lock command with the specified settings.
+    This function constructs a command to run i3lock with various options
+    based on the provided settings. It customizes the lock screen appearance
+    including fonts, colors, and sizes.
+    Args:
+        settings (AppSettings): An instance of AppSettings containing the
+                                configuration for the lock screen.
+    Raises:
+        KeyError: If any required setting is missing from the settings object.
+        subprocess.CalledProcessError: If the i3lock command fails to execute.
+    Example:
+        settings = AppSettings(
+            lock_screen=LockScreenSettings(
+                font="Arial",
+                font_size=24,
+                blurtype="5x5"
+            ),
+            colors=ColorSettings(
+                lock_screen_blank_color="000000",
+                lock_screen_clear_color="ffffff",
+                lock_screen_default_color="888888",
+                lock_screen_key_color="ff0000",
+                lock_screen_text_color="00ff00",
+                lock_screen_wrong_color="ff0000",
+                lock_screen_verifying_color="0000ff"
+        run_i3_lock(settings)
+    """
     cmd_template = Template(
         """
     i3lock
@@ -270,6 +300,15 @@ def _click_lock_screen(settings: AppSettings):
 
 
 def build_lock_screen_widget(settings: AppSettings):
+    """
+    Build a lock screen widget for the Qtile window manager.
+
+    Args:
+        settings (AppSettings): The application settings containing fonts and colors.
+
+    Returns:
+        widget.TextBox: A TextBox widget configured for the lock screen.
+    """
     return widget.TextBox(
         " ",
         font=settings.fonts.font_icon,

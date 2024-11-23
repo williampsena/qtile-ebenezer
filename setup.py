@@ -18,6 +18,11 @@ setup(
         "pyyaml>=6.0.2",
         "cairocffi>=1.7.1",
     ],
+    entry_points={
+        "console_scripts": [
+            "ebenezer=ebenezer.commands:app",
+        ],
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

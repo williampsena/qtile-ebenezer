@@ -9,6 +9,19 @@ from ebenezer.widgets.helpers.args import build_widget_args
 
 
 def build_backlight_widget(settings: AppSettings, kwargs: dict):
+    """
+    Build a backlight widget for the Qtile window manager.
+
+    This function creates a backlight widget using the provided settings and additional keyword arguments.
+    The widget displays the current backlight level and allows for interaction via mouse callbacks.
+
+    Args:
+        settings (AppSettings): An instance of AppSettings containing configuration for fonts, colors, and environment.
+        kwargs (dict): Additional keyword arguments to customize the widget.
+
+    Returns:
+        widget.Backlight: A configured backlight widget instance.
+    """
     default_args = {
         "font": settings.fonts.font_icon,
         "fontsize": settings.fonts.font_icon_size,
@@ -81,6 +94,15 @@ def __push_backlight_notification(settings: AppSettings, message: str):
 
 
 def setup_backlight_keys(settings: AppSettings):
+    """
+    Sets up key bindings for adjusting the backlight brightness.
+
+    Args:
+        settings (AppSettings): The application settings object containing configuration.
+
+    Returns:
+        list: A list of Key objects for increasing and decreasing the backlight brightness.
+    """
     return [
         Key([], "XF86MonBrightnessUp", _backlight_up(settings)),
         Key([], "XF86MonBrightnessDown", __backlight_down(settings)),

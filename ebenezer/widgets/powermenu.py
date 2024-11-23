@@ -13,6 +13,22 @@ def _powermenu_modal(settings: AppSettings):
 
 
 def build_powermenu_widget(settings: AppSettings, kwargs: dict):
+    """
+    Build a power menu widget for the Qtile window manager.
+
+    This function creates a TextBox widget configured with the provided settings
+    and additional keyword arguments. The widget is intended to be used as a power
+    menu, typically displaying a power icon and responding to mouse clicks to open
+    a power menu modal.
+
+    Args:
+        settings (AppSettings): An instance of AppSettings containing configuration
+                                for fonts, colors, and other settings.
+        kwargs (dict): Additional keyword arguments to customize the widget.
+
+    Returns:
+        widget.TextBox: A configured TextBox widget for the power menu.
+    """
     default_args = {
         "font": settings.fonts.font_icon,
         "fontsize": settings.fonts.font_icon_size,

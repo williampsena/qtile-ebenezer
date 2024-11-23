@@ -1,3 +1,15 @@
+"""
+fonts.py
+--------
+
+This module provides a class to manage font settings for Qtile.
+
+Classes:
+    AppSettingsFonts:
+        Manages font settings including font types, sizes, and icons.
+"""
+
+
 class AppSettingsFonts:
     font: str = ""
     font_regular: str = ""
@@ -15,6 +27,12 @@ class AppSettingsFonts:
     font_notification_size: int = 10
 
     def __init__(self, **kwargs):
+        """
+        Initializes the AppSettingsFonts with optional keyword arguments.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments to initialize the font settings.
+        """
         self.font = kwargs.get("font", self.font)
         self.font_regular = kwargs.get("font_regular", self.font_regular)
         self.font_light = kwargs.get("font_light", self.font_light)

@@ -1,3 +1,21 @@
+"""
+settings.py
+-----------
+
+This module provides a class to manage application settings and functions to load settings from files.
+
+Classes:
+    AppSettings:
+        Manages application settings including applications, bar, colors, commands, environment, floating, fonts, groups, groups_layout, keybindings, lock_screen, monitoring, and startup.
+
+Functions:
+    load_settings_by_files(config_filepath=None, colors_filepath=None, applications_filepath=None) -> AppSettings:
+        Loads settings from the specified files.
+
+    load_settings(raw_settings: dict) -> AppSettings:
+        Loads settings from a dictionary of raw settings.
+"""
+
 from pathlib import Path
 from typing import Any, List
 
@@ -47,6 +65,12 @@ class AppSettings:
     startup: dict[str, str] = {}
 
     def __init__(self, **kwargs):
+        """
+        Initializes the AppSettings with optional keyword arguments.
+
+        Args:
+            **kwargs: Arbitrary keyword arguments to initialize the application settings.
+        """
         self.applications = kwargs.get("applications", self.applications)
         self.bar = kwargs.get("bar", self.bar)
         self.colors = kwargs.get("colors", self.colors)
@@ -67,6 +91,17 @@ def load_settings_by_files(
     colors_filepath=None,
     applications_filepath=None,
 ) -> AppSettings:
+    """
+    Loads settings from the specified files.
+
+    Args:
+        config_filepath (str, optional): The path to the config file. Defaults to None.
+        colors_filepath (str, optional): The path to the colors file. Defaults to None.
+        applications_filepath (str, optional): The path to the applications file. Defaults to None.
+
+    Returns:
+        AppSettings: The loaded application settings.
+    """
     if config_filepath is None:
         config_filepath = _load_config_file("config")
 
@@ -86,6 +121,15 @@ def load_settings_by_files(
 
 
 def load_settings(raw_settings: dict) -> AppSettings:
+    """
+    Loads settings from a dictionary of raw settings.
+
+    Args:
+        raw_settings (dict): The dictionary of raw settings.
+
+    Returns:
+        AppSettings: The loaded application settings.
+    """
     raw_keys = ["commands", "floating", "groups", "groups_layout", "startup"]
     args = {k: v for k, v in raw_settings.items() if k in raw_keys}
 

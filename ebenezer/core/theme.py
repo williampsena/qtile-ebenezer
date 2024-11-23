@@ -1,3 +1,26 @@
+"""
+theme.py
+--------
+
+This module provides functions to apply themes and styles for Qtile.
+
+Functions:
+    preload_colors(settings: AppSettings) -> AppSettings:
+        Preloads colors and applies theme settings.
+
+    _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSettings:
+        Applies theme colors from a YAML file.
+
+    _apply_rofi_style(settings: AppSettings):
+        Applies the Rofi style based on the provided settings.
+
+    _extract_rasi_colors(colors: AppSettingsColors) -> str:
+        Extracts Rasi colors from the settings.
+
+    _apply_dusnt_style(settings: AppSettings):
+        Applies the Dunst style based on the provided settings.
+"""
+
 from pathlib import Path
 from string import Template
 
@@ -13,6 +36,15 @@ DUNSTRC_HOME_PATH = "$home/.config/dunst"
 
 
 def preload_colors(settings: AppSettings) -> AppSettings:
+    """
+    Preloads colors and applies theme settings.
+
+    Args:
+        settings (AppSettings): The application settings containing theme configurations.
+
+    Returns:
+        AppSettings: The updated application settings with applied theme.
+    """
     theme = settings.colors.theme
 
     if theme:
@@ -25,6 +57,16 @@ def preload_colors(settings: AppSettings) -> AppSettings:
 
 
 def _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSettings:
+    """
+    Applies theme colors from a YAML file.
+
+    Args:
+        theme_filepath (str): The path to the theme YAML file.
+        settings (AppSettings): The application settings to be updated.
+
+    Returns:
+        AppSettings: The updated application settings with applied theme colors.
+    """
     try:
         theme_filepath = resolve_file_path(theme_filepath)
 
@@ -47,6 +89,12 @@ def _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSetting
 
 
 def _apply_rofi_style(settings: AppSettings):
+    """
+    Applies the Rofi style based on the provided settings.
+
+    Args:
+        settings (AppSettings): The application settings containing Rofi style configurations.
+    """
     try:
         colors = {
             "font": f"{settings.fonts.rofi_font} {settings.fonts.rofi_font_size}",
@@ -73,6 +121,15 @@ def _apply_rofi_style(settings: AppSettings):
 
 
 def _extract_rasi_colors(colors: AppSettingsColors) -> str:
+    """
+    Extracts Rasi colors from the settings.
+
+    Args:
+        colors (AppSettingsColors): The application settings containing color configurations.
+
+    Returns:
+        str: The extracted Rasi colors as a string.
+    """
     colors_list = [
         f"    {color.replace("_", "-")}: {value};"
         for color, value in colors.raw.items()
@@ -81,6 +138,12 @@ def _extract_rasi_colors(colors: AppSettingsColors) -> str:
 
 
 def _apply_dusnt_style(settings: AppSettings):
+    """
+    Applies the Dunst style based on the provided settings.
+
+    Args:
+        settings (AppSettings): The application settings containing Dunst style configurations.
+    """
     try:
         template_file = resolve_file_path(f"{DUNSTRC_HOME_PATH}/dunstrcbaserc")
         target_file = resolve_file_path(f"{DUNSTRC_HOME_PATH}/dunstrc")

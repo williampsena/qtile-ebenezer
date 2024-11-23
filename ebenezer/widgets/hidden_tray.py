@@ -7,6 +7,19 @@ from ebenezer.widgets.wallpaper import build_wallpaper_widget
 
 
 def build_hidden_tray(settings: AppSettings, kwargs: dict):
+    """
+    Build a hidden tray widget with customizable settings.
+
+    This function constructs a hidden tray widget using the provided settings and additional keyword arguments.
+    It configures various components such as the system tray, backlight widget, wallpaper widget, and spacer.
+
+    Args:
+        settings (AppSettings): An instance of AppSettings containing configuration details.
+        kwargs (dict): Additional keyword arguments for customizing the widget components.
+
+    Returns:
+        widget.WidgetBox: A WidgetBox containing the configured widgets.
+    """
     default_args = {
         "padding": 10,
         "font": settings.fonts.font_icon,

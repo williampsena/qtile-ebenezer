@@ -4,6 +4,16 @@ from ebenezer.core.config.settings import AppSettings
 
 
 def build_weather_widget(settings: AppSettings, kwargs: dict):
+    """
+    Build a weather widget using the provided settings and additional arguments.
+
+    Args:
+        settings (AppSettings): An instance of AppSettings containing configuration for fonts, colors, and environment.
+        kwargs (dict): Additional keyword arguments to override the default widget settings.
+
+    Returns:
+        widget.OpenWeather: An instance of the OpenWeather widget configured with the specified settings.
+    """
     default_args = {
         "font": settings.fonts.font_icon,
         "fontsize": settings.fonts.font_icon_size,

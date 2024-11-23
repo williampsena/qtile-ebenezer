@@ -13,6 +13,21 @@ from ebenezer.widgets.helpers.args import build_widget_args
 class GitHubNotifications(base.ThreadPoolText):
     """
     A widget that fetches GitHub notifications.
+
+    Attributes:
+        orientations (str): The orientation of the widget, set to horizontal.
+        defaults (list): Default configuration options for the widget.
+
+    Args:
+        **config: Arbitrary keyword arguments for widget configuration.
+
+    Methods:
+        __init__(**config):
+            Initializes the GitHubNotifications widget with the given configuration.
+
+        poll():
+            Fetches the latest GitHub notifications and updates the widget display.
+            Returns a string representing the number of notifications or an error message.
     """
 
     orientations = base.ORIENTATION_HORIZONTAL
@@ -64,25 +79,27 @@ class GitHubNotifications(base.ThreadPoolText):
                 logger.warning("GitHub API Error... {status_code}")
                 return " "
         except Exception as e:
-            logger.warning("GitHub Notifications Error: {e}")
+            logger.warning(f"GitHub Notifications Error: {e}", exc_info=True)
             return " "
 
 
 def build_github_widget(settings: AppSettings, kwargs: dict):
-    default_icon_args = {
-        "font": settings.fonts.font_icon,
-        "fontsize": settings.fonts.font_icon_size,
-        "padding": 6,
-        "foreground": settings.colors.fg_white,
-        "foreground_normal": settings.colors.fg_white,
-        "foreground_alert": settings.colors.fg_yellow,
-        "background": settings.colors.bg_topbar_arrow,
-        "mouse_callbacks": {"Button1": go_to_notifications_url(settings)},
-    }
+    """
+    Build a GitHub widget for the Qtile window manager.
 
-    icon_args = build_widget_args(settings, default_icon_args, kwargs.get("icon", {}))
+    This function constructs a GitHub widget using the provided settings and keyword arguments.
+    It creates an icon widget and a GitHub notifications widget with the specified configurations.
 
-    icon_widget = widget.TextBox(f"{icon_args.pop("text", "")}", **icon_args)
+    Args:
+        settings (AppSettings): The application settings containing fonts, colors, and other configurations.
+        kwargs (dict): Additional keyword arguments for customizing the widget. It can contain:
+            - "icon" (dict): Custom arguments for the icon widget.
+            - "widget" (dict): Custom arguments for the GitHub notifications widget.
+
+    Returns:
+        list: A list containing the icon widget and the GitHub notifications widget.
+    """
+    icon_widget = _build_github_icon_widget(settings, kwargs.get("icon", {}))
 
     default_args = {
         "icon_widget": icon_widget,
@@ -102,7 +119,24 @@ def build_github_widget(settings: AppSettings, kwargs: dict):
     ]
 
 
-def go_to_notifications_url(settings: AppSettings):
+def _build_github_icon_widget(settings: AppSettings, kwargs: dict):
+    default_icon_args = {
+        "font": settings.fonts.font_icon,
+        "fontsize": settings.fonts.font_icon_size,
+        "padding": 6,
+        "foreground": settings.colors.fg_white,
+        "foreground_normal": settings.colors.fg_white,
+        "foreground_alert": settings.colors.fg_yellow,
+        "background": settings.colors.bg_topbar_arrow,
+        "mouse_callbacks": {"Button1": _go_to_notifications_url(settings)},
+    }
+
+    icon_args = build_widget_args(settings, default_icon_args, kwargs)
+
+    return widget.TextBox(f"{icon_args.pop("text", "")}", **icon_args)
+
+
+def _go_to_notifications_url(settings: AppSettings):
     cmd = settings.commands.get("open_url")
 
     if cmd is None:

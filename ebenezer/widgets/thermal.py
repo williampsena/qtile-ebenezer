@@ -11,7 +11,19 @@ from ebenezer.widgets.helpers.args import build_widget_args
 
 class ColorizedThermalWidget(ThermalSensor):
     """
-    A widget that enhances the user experience by displaying thermal sensors using color and icons
+    A widget that enhances the user experience by displaying thermal sensors using color and icons.
+
+    Attributes:
+        high_color (str): The color used when the temperature exceeds the high threshold.
+        medium_color (str): The color used when the temperature exceeds the medium threshold but is below the high threshold.
+        default_color (str): The default color used when the temperature is below the medium threshold.
+        threshold_medium (float): The temperature threshold for medium level.
+        threshold_high (float): The temperature threshold for high level.
+
+    Methods:
+        poll() -> str:
+            Retrieves the current temperature, updates the foreground color based on the temperature thresholds,
+            and returns the temperature text, potentially modified with an icon.
     """
 
     def __init__(self, **config):
@@ -46,6 +58,21 @@ class ColorizedThermalWidget(ThermalSensor):
 
 
 def build_thermal_widget(settings: AppSettings, kwargs: dict):
+    """
+    Build a thermal widget for monitoring temperature.
+
+    This function creates a thermal widget with customizable settings and arguments.
+    It constructs the widget using default and provided arguments for icon and sensor.
+
+    Args:
+        settings (AppSettings): The application settings containing fonts, colors, and monitoring thresholds.
+        kwargs (dict): Additional keyword arguments to customize the widget. It can contain:
+            - "icon" (dict): Custom arguments for the icon widget.
+            - "sensor" (dict): Custom arguments for the sensor widget.
+
+    Returns:
+        list: A list containing the icon widget and the thermal sensor widget.
+    """
     default_icon_args = {
         "font": settings.fonts.font_icon,
         "fontsize": settings.fonts.font_icon_size,

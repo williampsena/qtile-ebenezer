@@ -3,7 +3,25 @@ from libqtile import bar, widget
 from ebenezer.core.config.settings import AppSettings
 
 
-def build_spacer_widget(settings: AppSettings, kwargs: dict):
+def build_spacer_widget(_: AppSettings, kwargs: dict):
+    """
+    Build a spacer widget with specified settings.
+
+    Args:
+        _: AppSettings
+            Placeholder for application settings, not used in the function.
+        kwargs: dict
+            Dictionary of keyword arguments to customize the spacer widget.
+
+    Returns:
+        widget.Spacer: A spacer widget instance with the specified settings.
+
+    Notes:
+        - The 'length' argument in kwargs can be "stretch", "calculated", or an integer.
+        - If 'length' is "stretch", it will be set to bar.STRETCH.
+        - If 'length' is "calculated", it will be set to bar.CALCULATED.
+        - If 'length' is not an integer, it will default to 1.
+    """
     default_args = {"length": bar.STRETCH}
     args = default_args | kwargs
 
@@ -13,8 +31,6 @@ def build_spacer_widget(settings: AppSettings, kwargs: dict):
         length = bar.STRETCH
     elif length == "calculated":
         length = bar.CALCULATED
-    elif length == "static":
-        length = bar.STATIC
     elif not isinstance(length, int):
         length = 1
 

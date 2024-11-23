@@ -1,20 +1,30 @@
-from files import resolve_file_path
 from libqtile import qtile, widget
 
 from ebenezer.core.config.settings import AppSettings
+from ebenezer.core.files import resolve_file_path
 
 
 def build_os_logo(settings: AppSettings):
+    """
+    Builds a list containing the OS logo widget based on the provided settings.
+
+    Args:
+        settings (AppSettings): The application settings containing environment configurations.
+
+    Returns:
+        list: A list containing the OS logo widget. If neither `os_logo_icon` nor `os_logo`
+              is specified in the settings, an empty list is returned.
+    """
     if settings.environment.os_logo_icon != "":
-        return [build_os_logo_icon(settings)]
+        return [_build_os_logo_icon(settings)]
 
     if settings.environment.os_logo != "":
-        return [build_os_logo_image(settings)]
+        return [_build_os_logo_image(settings)]
 
     return []
 
 
-def build_os_logo_icon(settings: AppSettings):
+def _build_os_logo_icon(settings: AppSettings):
     return widget.TextBox(
         settings.environment.os_logo_icon,
         font=settings.fonts.font_icon,
@@ -28,7 +38,7 @@ def build_os_logo_icon(settings: AppSettings):
     )
 
 
-def build_os_logo_image(settings: AppSettings):
+def _build_os_logo_image(settings: AppSettings):
     return widget.Image(
         filename=resolve_file_path(settings.environment.os_logo),
         scale="False",
