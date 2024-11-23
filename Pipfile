@@ -30,6 +30,8 @@ twine = "*"
 responses = "*"
 pytest-cov = "*"
 bump2version = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
 
 [requires]
 python_version = "3.12"

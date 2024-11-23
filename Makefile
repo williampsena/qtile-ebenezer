@@ -1,7 +1,8 @@
-SHELL := /bin/bash
-PIPENV=pipenv
-PIPFILE=Pipfile
-PYTHON=$(PIPENV) run python
+SHELL 		  := /bin/bash
+PIPENV		  = pipenv
+PIPFILE       = Pipfile
+PYTHON        = $(PIPENV) run python
+RTD_API_URL   = https://readthedocs.org/api/v3/projects/qtile-ebenezer/builds/
 
 precommit: leaks
 
@@ -41,6 +42,14 @@ logs:
 	cat ~/.local/share/qtile/qtile.log
 
 deploy:
+	rm -rf dist/*
 	$(PIPENV) run bump2version patch
 	$(PIPENV) run python setup.py sdist bdist_wheel
 	$(PIPENV) run twine upload dist/*
+
+docs:
+	rm -rf .docs
+	sphinx-build -b html ebenezer .docs/html
+
+deploy-docs:
+	curl -X POST -d "" -H "Authorization: Token $(RTD_TOKEN)" $(RTD_API_URL)

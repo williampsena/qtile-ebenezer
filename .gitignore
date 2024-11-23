@@ -173,3 +173,7 @@ keybindings.yml
 ebenezer/rofi/_vars.rasi
 
 gitleaks_report.json
+
+# docs
+_static
+.docs/*
