@@ -2,8 +2,8 @@ import subprocess
 
 from libqtile.widget import base
 
+from ebenezer.config.settings import AppSettings
 from ebenezer.core.command import build_shell_command, run_shell_command
-from ebenezer.core.config.settings import AppSettings
 from ebenezer.widgets.helpers.args import build_widget_args
 
 

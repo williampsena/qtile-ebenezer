@@ -1,7 +1,7 @@
 from libqtile import widget
 
+from ebenezer.config.settings import AppSettings
 from ebenezer.core.command import lazy_command
-from ebenezer.core.config.settings import AppSettings
 from ebenezer.widgets.helpers.args import build_widget_args
 
 

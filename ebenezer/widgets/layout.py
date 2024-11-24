@@ -1,7 +1,7 @@
 from libqtile import bar, hook, widget
 from libqtile.widget import base
 
-from ebenezer.core.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings
 from ebenezer.widgets.helpers.args import build_widget_args
 
 

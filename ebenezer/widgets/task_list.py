@@ -1,7 +1,7 @@
 from libqtile import widget
 from libqtile.log_utils import logger
 
-from ebenezer.core.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings
 
 
 class FontIconTaskList(widget.TaskList):

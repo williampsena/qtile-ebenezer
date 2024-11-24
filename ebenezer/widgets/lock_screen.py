@@ -10,12 +10,12 @@ from libqtile import widget
 from libqtile.log_utils import logger
 from PIL import Image, ImageDraw, ImageFont
 
-from ebenezer.core.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings
 from ebenezer.core.notify import push_notification_no_history
 from ebenezer.core.requests import request_retry
 
 OUTPUT_FILE = "/tmp/i3lock.png"
-JOKE_OUTPUT_FILE = "/tmp/joke.png"
+QUOTE_OUTPUT_FILE = "/tmp/quote.png"
 
 
 def _is_i3lock_running():
@@ -114,7 +114,7 @@ def _get_joke(settings: AppSettings) -> str:
 
 
 def _remove_output_files():
-    for raw_filepath in [OUTPUT_FILE, JOKE_OUTPUT_FILE]:
+    for raw_filepath in [OUTPUT_FILE, QUOTE_OUTPUT_FILE]:
         file_path = Path(raw_filepath)
 
         if file_path.exists():
@@ -123,12 +123,12 @@ def _remove_output_files():
 
 def _build_joke_image(settings: AppSettings, joke: str, width: int, height: int):
     img = Image.new(
-        "RGB", (width, height), color=settings.colors.lock_screen_joke_foreground_color
+        "RGB", (width, height), color=settings.colors.lock_screen_quote_foreground_color
     )
     draw = ImageDraw.Draw(img)
 
     font = ImageFont.truetype(
-        settings.lock_screen.joke_font_path, settings.lock_screen.joke_font_size
+        settings.lock_screen.quote_font_path, settings.lock_screen.quote_font_size
     )
 
     bbox = draw.textbbox((0, 0), joke, font=font)
@@ -141,10 +141,10 @@ def _build_joke_image(settings: AppSettings, joke: str, width: int, height: int)
         position,
         joke,
         font=font,
-        fill=settings.colors.lock_screen_joke_text_color,
+        fill=settings.colors.lock_screen_quote_text_color,
     )
 
-    img.save(JOKE_OUTPUT_FILE)
+    img.save(QUOTE_OUTPUT_FILE)
 
 
 def _build_background(settings: AppSettings, output_file: str):
@@ -154,7 +154,7 @@ def _build_background(settings: AppSettings, output_file: str):
     joke = _get_joke(settings)
     _build_joke_image(settings, joke=joke, width=width, height=height)
 
-    overlay = Image.open(JOKE_OUTPUT_FILE)
+    overlay = Image.open(QUOTE_OUTPUT_FILE)
 
     background = background.convert("RGBA")
     overlay = overlay.convert("RGBA")

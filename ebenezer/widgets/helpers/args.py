@@ -1,6 +1,6 @@
 from typing import List
 
-from ebenezer.core.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings
 
 DEFAULT_COLOR_ARGS: List[str] = ["foreground", "background"]
 

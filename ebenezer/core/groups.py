@@ -14,7 +14,7 @@ from typing import List
 from libqtile.config import Key
 from libqtile.lazy import lazy
 
-from ebenezer.core.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings
 
 
 def build_groups(keys: List, settings: AppSettings):

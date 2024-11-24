@@ -12,6 +12,7 @@ pyyaml = "*"
 cairocffi = "*"
 pytest-cov = "*"
 typer = "*"
+setuptools-scm = "*"
 
 [dev-packages]
 black = "*"
@@ -32,6 +33,8 @@ pytest-cov = "*"
 bump2version = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
+furo = "*"
+setuptools-scm = "*"
 
 [requires]
 python_version = "3.12"

@@ -1,6 +1,6 @@
 from libqtile import qtile, widget
 
-from ebenezer.core.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings
 from ebenezer.core.files import resolve_file_path
 
 

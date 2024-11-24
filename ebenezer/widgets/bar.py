@@ -33,7 +33,7 @@ Constants:
 from libqtile import bar, widget
 from libqtile.log_utils import logger
 
-from ebenezer.core.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings
 from ebenezer.widgets.app_menu import build_app_menu_widget
 from ebenezer.widgets.arrow import build_arrow_widget
 from ebenezer.widgets.battery import build_battery_widget

@@ -1,6 +1,6 @@
 from libqtile import widget
 
-from ebenezer.core.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings
 from ebenezer.widgets.backlight import build_backlight_widget
 from ebenezer.widgets.helpers.args import build_widget_args
 from ebenezer.widgets.wallpaper import build_wallpaper_widget
