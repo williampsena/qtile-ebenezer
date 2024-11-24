@@ -27,3 +27,10 @@ ebenezer backlight --help
 ebenezer volume --help
 ebenezer wallpaper --help
 ```
+
+
+# Documentation
+
+You may access library documentation generated with Sphinx [here](https://qtile-ebenezer.readthedocs.io/en/latest/).
+
+Thank you for the Read The Docs open source support. ❤️
