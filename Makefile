@@ -60,9 +60,13 @@ deploy:
 	$(PIPENV) run twine upload dist/*
 
 test:
-	$(PIPENV) run pytest
+	$(PIPENV) run pytest $(file)
 
 stubgen:
 	$(PIPENV) stubgen -p ebenezer -o stubs
+
+aur-pkg:
+	makepkg --printsrcinfo > .SRCINFO
+	makepkg -sfc
 
 .PHONY: precommit leaks-history leaks truncate-logs logs docs-clean docs-locally deploy test install clean

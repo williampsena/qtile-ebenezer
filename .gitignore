@@ -177,3 +177,11 @@ gitleaks_report.json
 # docs
 _static
 .docs/*
+
+# aur
+/qtile-ebenezer
+/python-qtile-ebenezer-*.pkg.tar.zst
+/pkg
+/src
+/dist
+/build

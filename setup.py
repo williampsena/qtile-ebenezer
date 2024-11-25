@@ -10,6 +10,7 @@ setup(
     author_email="me@willsena.dev",
     url="https://github.com/williampsena/qtile-ebenezer",
     packages=find_packages(),
+    include_package_data=True,
     package_data={"ebenezer": ["py.typed"]},
     install_requires=[
         "requests>=2.32.3",
