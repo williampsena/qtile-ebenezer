@@ -1,6 +1,6 @@
 # Maintainer: Your Name <your.email@example.com>
 pkgname=python-qtile_ebenezer
-pkgver=0.1.7
+pkgver=0.1.8
 pkgrel=1
 provides=("$pkgname")
 conflicts=("$pkgname")
@@ -22,12 +22,14 @@ sha256sums=('SKIP')
 
 build() {
   cd "$srcdir/qtile-ebenezer"
+  rm -rf "$srcdir/qtile-ebenezer/dist"
   python -m build --wheel
 }
 
 package()
 {
   cd "$srcdir/qtile-ebenezer"
+  echo $pkgdir
   python -m installer --destdir="$pkgdir" dist/*.whl
 
   install -vDm 644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname/"
