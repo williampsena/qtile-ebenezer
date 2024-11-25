@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="qtile-ebenezer",
-    version="0.1.5",
+    version="0.1.6",
     description="This repository provides a collection of widgets and behaviors spanning Desktop to Qtile Tiling Window Manager.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
