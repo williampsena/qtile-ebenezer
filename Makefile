@@ -62,4 +62,7 @@ deploy:
 test:
 	$(PIPENV) run pytest
 
+stubgen:
+	$(PIPENV) stubgen -p ebenezer -o stubs
+
 .PHONY: precommit leaks-history leaks truncate-logs logs docs-clean docs-locally deploy test install clean

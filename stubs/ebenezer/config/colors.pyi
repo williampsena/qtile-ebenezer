@@ -1,0 +1,52 @@
+class AppSettingsColors:
+    raw: dict
+    theme: str | None
+    fg_normal: str
+    fg_focus: str
+    fg_urgent: str
+    bg_normal: str
+    bg_focus: str
+    bg_urgent: str
+    bg_systray: str
+    bg_selected: str
+    fg_blue: str
+    fg_light_blue: str
+    fg_yellow: str
+    fg_red: str
+    fg_orange: str
+    fg_purple: str
+    fg_green: str
+    fg_gray: str
+    fg_black: str
+    fg_white: str
+    fg_selected: str
+    bg_topbar: str
+    bg_topbar_selected: str
+    bg_topbar_arrow: str
+    border_color_normal: str
+    border_color_active: str
+    border_color_marked: str
+    titlebar_bg_focus: str
+    titlebar_bg_normal: str
+    taglist_bg_focus: str
+    group_focus: str
+    group_normal: str
+    lock_screen_blank_color: str
+    lock_screen_clear_color: str
+    lock_screen_default_color: str
+    lock_screen_key_color: str
+    lock_screen_text_color: str
+    lock_screen_wrong_color: str
+    lock_screen_verifying_color: str
+    lock_screen_quote_foreground_color: str
+    lock_screen_quote_text_color: str
+    rofi_background: str
+    rofi_background_alt: str
+    rofi_foreground: str
+    rofi_selected: str
+    rofi_active: str
+    rofi_urgent: str
+    rofi_border: str
+    rofi_border_alt: str
+    def __init__(self, **kwargs) -> None: ...
+    def get_color(self, color_name: str) -> str: ...

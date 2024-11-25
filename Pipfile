@@ -13,6 +13,7 @@ cairocffi = "*"
 pytest-cov = "*"
 typer = "*"
 setuptools-scm = "*"
+mypy = "*"
 
 [dev-packages]
 black = "*"

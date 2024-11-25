@@ -1,0 +1,3 @@
+from ebenezer.config.settings import AppSettings as AppSettings
+
+def build_spacer_widget(_: AppSettings, kwargs: dict): ...
