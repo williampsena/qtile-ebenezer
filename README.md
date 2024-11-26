@@ -12,9 +12,34 @@ This theme was named Ebenezer 🪨, which meaning "stone of helper.".
 
 ## Installation
 
+### For Arch users
+
+I developed an AUR package to install this package. I have no experience with AUR packages, so if you discover anything wrong, please contact me at issues.
+
+#### Option 1: Using yay
+
+```shell
+yay -Syu python-qtile-ebenezer
+```
+
+#### Option 2: Using pamac (Manjaro)
+
+```shell
+pamac update
+pamac install python-qtile-ebenezer
+```
+
+### PIP
+
+You can install directly as a typical method using pip.
+
+> However, this is not the greatest method because you risk breaking the OS by installing packages worldwide using Pip.
+
 ```shell
 pip install ebenezer
 ```
+
+
 
 # The Ebenezer CLI
 
