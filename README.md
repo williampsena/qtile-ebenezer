@@ -36,9 +36,18 @@ You can install directly as a typical method using pip.
 > However, this is not the greatest method because you risk breaking the OS by installing packages worldwide using Pip.
 
 ```shell
-pip install ebenezer
+pip install qtile-ebenezer
 ```
 
+### Using
+
+Some tests to run at repl 'python':
+
+```python
+from ebenezer.core.files import resolve_file_path
+resolve_file_path("$home")
+# '/home/your_home'
+```
 
 
 # The Ebenezer CLI
