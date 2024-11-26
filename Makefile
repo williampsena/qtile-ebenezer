@@ -69,4 +69,19 @@ aur-pkg:
 	makepkg --printsrcinfo > .SRCINFO
 	makepkg -sfc
 
+aur-setup:
+	rm -rf .aur
+	mkdir .aur
+	git clone ssh://aur@aur.archlinux.org/python-qtile-ebenezer.git .aur/python-qtile-ebenezer
+
+aur-commit:
+	cp PKGBUILD .SRCINFO LICENSE CHANGELOG .aur/python-qtile-ebenezer
+
+	cd .aur/python-qtile-ebenezer && \
+	git add PKGBUILD .SRCINFO LICENSE CHANGELOG && \
+	git commit -m "$(comment)"
+
+aur-deploy:
+	(cd .aur/python-qtile-ebenezer && git push)
+
 .PHONY: precommit leaks-history leaks truncate-logs logs docs-clean docs-locally deploy test install clean

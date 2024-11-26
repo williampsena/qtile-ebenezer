@@ -180,8 +180,10 @@ _static
 
 # aur
 /qtile-ebenezer
-/python-qtile-ebenezer-*.pkg.tar.zst
+/python-qtile-ebenezer*.pkg.tar.zst
+/python-qtile_ebenezer*.pkg.tar.zst
 /pkg
 /src
 /dist
 /build
+.aur
