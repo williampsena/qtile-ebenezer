@@ -1,7 +1,8 @@
 import typer
-from backlight import app as backlight_app
-from volume import app as volume_app
-from wallpaper import app as wallpaper_app
+
+from ebenezer.commands.backlight import app as backlight_app
+from ebenezer.commands.volume import app as volume_app
+from ebenezer.commands.wallpaper import app as wallpaper_app
 
 app = typer.Typer()
 

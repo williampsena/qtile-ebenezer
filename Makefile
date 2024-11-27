@@ -68,6 +68,12 @@ stubgen:
 aur-pkg:
 	makepkg -sfc
 
+aur-install:
+	rm -rf python-qtile-ebenezer-*.pkg.tar.zst
+	$(MAKE) aur-pkg
+	yay -U python-qtile-ebenezer-*.pkg.tar.zst
+
+
 aur-setup:
 	makepkg --printsrcinfo > .SRCINFO
 	rm -rf .aur
@@ -88,6 +94,5 @@ aur-deploy:
 	$(MAKE) aur-setup
 	$(MAKE) aur-commit comment="Update to $(shell grep '^pkgver=' PKGBUILD | cut -d'=' -f2)"
 	$(MAKE) aur-push
-
 
 .PHONY: precommit leaks-history leaks truncate-logs logs docs-clean docs-locally deploy test install clean
