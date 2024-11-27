@@ -66,10 +66,10 @@ stubgen:
 	$(PIPENV) stubgen -p ebenezer -o stubs
 
 aur-pkg:
-	makepkg --printsrcinfo > .SRCINFO
 	makepkg -sfc
 
 aur-setup:
+	makepkg --printsrcinfo > .SRCINFO
 	rm -rf .aur
 	mkdir .aur
 	git clone ssh://aur@aur.archlinux.org/python-qtile-ebenezer.git .aur/python-qtile-ebenezer
@@ -81,7 +81,13 @@ aur-commit:
 	git add PKGBUILD .SRCINFO LICENSE CHANGELOG && \
 	git commit -m "$(comment)"
 
-aur-deploy:
+aur-push:
 	(cd .aur/python-qtile-ebenezer && git push)
+
+aur-deploy:
+	$(MAKE) aur-setup
+	$(MAKE) aur-commit comment="Update to $(shell grep '^pkgver=' PKGBUILD | cut -d'=' -f2)"
+	$(MAKE) aur-push
+
 
 .PHONY: precommit leaks-history leaks truncate-logs logs docs-clean docs-locally deploy test install clean
