@@ -10,6 +10,8 @@ environment:
   os_logo_icon_color: "fg_purple"
   weather_api_key: foo
   city_id: 1
+  rofi_home: /home/foo/.config/qtile/rofi
+  scripts: /home/foo/.config/qtile/scripts
 
 groups:
   browsers: 

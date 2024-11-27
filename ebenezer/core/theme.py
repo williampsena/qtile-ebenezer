@@ -31,7 +31,7 @@ from ebenezer.core.dict import merge_dicts_recursive
 from ebenezer.core.files import resolve_file_path
 from ebenezer.core.yaml import read_yaml_file
 
-ROFI_TEMPLATES = [["$rofi_home/_vars.template.rasi", "$rofi_home/_vars.rasi"]]
+ROFI_TEMPLATES = [["_vars.template.rasi", "_vars.rasi"]]
 DUNSTRC_HOME_PATH = "$home/.config/dunst"
 
 
@@ -109,8 +109,10 @@ def _apply_rofi_style(settings: AppSettings):
             "colors": _extract_rasi_colors(settings.colors),
         }
 
+        rofi_home = settings.environment.rofi_home or "$rofi_home"
+
         for template_file, target_file in ROFI_TEMPLATES:
-            with open(resolve_file_path(template_file), "r") as f:
+            with open(resolve_file_path(f"{rofi_home}/{template_file}"), "r") as f:
                 cmd_template = Template(f.read())
                 content = cmd_template.safe_substitute(colors).strip()
 

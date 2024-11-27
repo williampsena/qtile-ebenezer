@@ -24,6 +24,8 @@ def test_parse_settings():
             backlight_name="",
             weather_api_key="foo",
             city_id="1",
+            rofi_home="/home/foo/.config/qtile/rofi",
+            scripts="/home/foo/.config/qtile/scripts",
         ),
         fonts=AppSettingsFonts(
             font="Fira Code Nerd Font Bold",

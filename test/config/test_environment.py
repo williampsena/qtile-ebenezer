@@ -18,6 +18,8 @@ def test_parse_environment():
         backlight_name="",
         weather_api_key="foo",
         city_id="1",
+        rofi_home="/home/foo/.config/qtile/rofi",
+        scripts="/home/foo/.config/qtile/scripts",
     )
 
     assert environment.__dict__ == expected.__dict__
