@@ -23,7 +23,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "ebenezer=ebenezer.commands:app",
+            "ebenezer=ebenezer.commands.app:app",
         ],
     },
     classifiers=[

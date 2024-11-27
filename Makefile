@@ -68,11 +68,18 @@ stubgen:
 aur-pkg:
 	makepkg -sfc
 
+aur-clean:
+	rm -rf qtile-ebenezer dist python-qtile-ebenezer-*.pkg.tar.zst
+
 aur-install:
-	rm -rf python-qtile-ebenezer-*.pkg.tar.zst
-	$(MAKE) aur-pkg
+	$(MAKE) aur-clean aur-pkg
 	yay -U python-qtile-ebenezer-*.pkg.tar.zst
 
+test-build:
+	$(MAKE) aur-clean
+	python -m build --wheel --outdir "qtile-ebenezer/dist"
+	python -m installer --destdir="$(PWD)/qtile-ebenezer" qtile-ebenezer/dist/*.whl
+	qtile-ebenezer/usr/bin/ebenezer --help
 
 aur-setup:
 	makepkg --printsrcinfo > .SRCINFO
