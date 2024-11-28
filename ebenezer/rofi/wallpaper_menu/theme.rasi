@@ -1,6 +1,6 @@
 /* Confirm Dialog */
 
-@import "../_vars.rasi"
+@import "~/.config/rofi/_qtile_theme.rasi"
 
 * {
     background-color:       @background;

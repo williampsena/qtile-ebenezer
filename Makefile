@@ -36,7 +36,7 @@ format:
 	$(PIPENV) run black .
 
 clean:
-	-rm -rf dist qtile.egg-info docs/_build build/ .tox/ .mypy_cache/ .pytest_cache/ .eggs/
+	-rm -rf dist qtile.egg-info docs/_build build/ .tox/ .mypy_cache/ .pytest_cache/ .eggs/ pkg/
 
 truncate-logs:
 	truncate -s0 ~/.local/share/qtile/qtile.log 
@@ -75,11 +75,21 @@ aur-install:
 	$(MAKE) aur-clean aur-pkg
 	yay -U python-qtile-ebenezer-*.pkg.tar.zst
 
-test-build:
+local-build:
 	$(MAKE) aur-clean
 	python -m build --wheel --outdir "qtile-ebenezer/dist"
 	python -m installer --destdir="$(PWD)/qtile-ebenezer" qtile-ebenezer/dist/*.whl
+
+test-build:
+	$(MAKE) local-build
 	qtile-ebenezer/usr/bin/ebenezer --help
+
+local-install:
+	$(MAKE) aur-clean
+	python -m build --wheel --outdir "qtile-ebenezer/dist"
+	python -m installer --destdir="$(PWD)/qtile-ebenezer" qtile-ebenezer/dist/*.whl
+	sudo cp -R qtile-ebenezer/usr/lib/python3.12/site-packages/ebenezer /usr/lib/python3.12/site-packages
+	sudo cp qtile-ebenezer/usr/bin/ebenezer /usr/bin/ebenezer
 
 aur-setup:
 	makepkg --printsrcinfo > .SRCINFO

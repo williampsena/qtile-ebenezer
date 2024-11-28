@@ -31,8 +31,92 @@ from ebenezer.core.dict import merge_dicts_recursive
 from ebenezer.core.files import resolve_file_path
 from ebenezer.core.yaml import read_yaml_file
 
-ROFI_TEMPLATES = [["_vars.template.rasi", "_vars.rasi"]]
+ROFI_TEMPLATES = [["_vars.template.rasi", "$home/.config/rofi/_qtile_theme.rasi"]]
 DUNSTRC_HOME_PATH = "$home/.config/dunst"
+
+"""
+theme.py
+--------
+
+This module provides functions to apply themes and styles for Qtile.
+
+Functions:
+    preload_colors(settings: AppSettings) -> AppSettings:
+        Preloads colors and applies theme settings.
+
+    _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSettings:
+        Applies theme colors from a YAML file.
+
+    _apply_rofi_style(settings: AppSettings):
+        Applies the Rofi style based on the provided settings.
+
+    _extract_rasi_colors(colors: AppSettingsColors) -> str:
+        Extracts Rasi colors from the settings.
+
+    _apply_dusnt_style(settings: AppSettings):
+        Applies the Dunst style based on the provided settings.
+"""
+
+from pathlib import Path
+from string import Template
+
+from libqtile.log_utils import logger
+
+from ebenezer.config.settings import AppSettings, AppSettingsColors
+from ebenezer.core.dict import merge_dicts_recursive
+from ebenezer.core.files import resolve_file_path
+from ebenezer.core.yaml import read_yaml_file
+
+ROFI_TEMPLATES = [["_vars.template.rasi", "$home/.config/rofi/_qtile_theme.rasi"]]
+DUNSTRC_HOME_PATH = "$home/.config/dunst"
+
+
+def _rofi_home(settings: AppSettings):
+    """
+    Returns the rofi home directory from the given settings.
+
+    Args:
+        settings (AppSettings): An instance of AppSettings containing environment configurations.
+
+    Returns:
+        str: The rofi home directory path. If not set in the environment, returns the default value "$rofi_home".
+    """
+    return resolve_file_path(settings.environment.rofi_home or "$rofi_home")
+
+
+def _theme_file_exists(settings: AppSettings) -> bool:
+    """
+    Checks if any of the theme files specified in ROFI_TEMPLATES exist in the
+    directory specified by the settings.
+
+    Args:
+        settings (AppSettings): The application settings containing the directory
+                                information.
+
+    Returns:
+        bool: True if any of the theme files exist, False otherwise.
+    """
+    for template_file, _ in ROFI_TEMPLATES:
+        if Path(f"{_rofi_home(settings)}/{template_file}").exists:
+            return True
+
+    return False
+
+
+def maybe_preload_colors(settings: AppSettings) -> AppSettings:
+    """
+    Preloads colors and applies theme settings if theme file does not exists
+
+    Args:
+        settings (AppSettings): The application settings containing theme configurations.
+
+    Returns:
+        AppSettings: The updated application settings with applied theme.
+    """
+    if _theme_file_exists(settings):
+        return settings
+
+    return preload_colors(settings)
 
 
 def preload_colors(settings: AppSettings) -> AppSettings:
@@ -50,7 +134,7 @@ def preload_colors(settings: AppSettings) -> AppSettings:
     if theme:
         settings = _apply_theme_color(theme, settings)
 
-    _apply_rofi_style(settings)
+    apply_rofi_style(settings)
     _apply_dusnt_style(settings)
 
     return settings
@@ -88,7 +172,7 @@ def _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSetting
         return settings
 
 
-def _apply_rofi_style(settings: AppSettings):
+def apply_rofi_style(settings: AppSettings):
     """
     Applies the Rofi style based on the provided settings.
 
@@ -109,10 +193,8 @@ def _apply_rofi_style(settings: AppSettings):
             "colors": _extract_rasi_colors(settings.colors),
         }
 
-        rofi_home = settings.environment.rofi_home or "$rofi_home"
-
         for template_file, target_file in ROFI_TEMPLATES:
-            with open(resolve_file_path(f"{rofi_home}/{template_file}"), "r") as f:
+            with open(f"{_rofi_home(settings)}/{template_file}", "r") as f:
                 cmd_template = Template(f.read())
                 content = cmd_template.safe_substitute(colors).strip()
 

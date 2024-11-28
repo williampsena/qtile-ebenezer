@@ -38,5 +38,26 @@ def mute_toggle():
     typer.echo("Mute toggled")
 
 
+@app.command("mute_on")
+def mute_on():
+    command = "pactl set-sink-mute @DEFAULT_SINK@ 1"
+    run_command(command)
+    typer.echo("Mute on")
+
+
+@app.command("mute_off")
+def mute_off():
+    command = "pactl set-sink-mute @DEFAULT_SINK@ 0"
+    run_command(command)
+    typer.echo("Mute off")
+
+
+@app.command("mute_status")
+def mute_status():
+    command = "pactl list sinks | grep 'Mute:' | head -n 1 | awk '{print $2}'"
+    run_command(command)
+    typer.echo("Mute off")
+
+
 if __name__ == "__main__":
     app()

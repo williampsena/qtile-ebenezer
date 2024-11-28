@@ -1,4 +1,4 @@
-@import "../_vars.rasi"
+@import "~/.config/rofi/_qtile_theme.rasi"
 
 configuration {
     show-icons:                     false;
