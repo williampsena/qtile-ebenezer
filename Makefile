@@ -57,6 +57,7 @@ docs-locally:
 	$(PIPENV) run sphinx-build -b html docs docs/_build/html
 
 deploy:
+	$(MAKE) stubgen
 	rm -rf dist/*
 	$(PIPENV) run bump2version patch
 	$(PIPENV) run python setup.py sdist bdist_wheel
