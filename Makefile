@@ -66,7 +66,7 @@ test:
 	$(PIPENV) run pytest $(file)
 
 stubgen:
-	$(PIPENV) stubgen -p ebenezer -o stubs
+	$(PIPENV) run stubgen -p ebenezer -o stubs
 
 aur-pkg:
 	makepkg -sfc

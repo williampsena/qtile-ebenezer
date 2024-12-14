@@ -1,9 +1,9 @@
 from _typeshed import Incomplete
 
-home: Incomplete
-qtile_home: Incomplete
-theme_home: Incomplete
-rofi_home: Incomplete
+home: str
+qtile_home: str
+theme_home: str
+rofi_home: str
 scripts: Incomplete
 
-def resolve_file_path(raw_path: str) -> str: ...
+def resolve_file_path(raw_path: str, **kwargs: dict) -> str: ...

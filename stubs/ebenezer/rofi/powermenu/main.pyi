@@ -1,0 +1,3 @@
+from ebenezer.config.settings import load_settings_by_files as load_settings_by_files
+
+def main() -> None: ...
