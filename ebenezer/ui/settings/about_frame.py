@@ -1,6 +1,6 @@
 import webbrowser
 
-import pkg_resources
+import importlib.metadata
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
@@ -30,7 +30,7 @@ class AboutFrame(ttk.Frame):
         webbrowser.open_new(url)
 
     def _version(self):
-        return pkg_resources.get_distribution("qtile-ebenezer").version
+        return importlib.metadata.version("qtile-ebenezer")
 
     def _build_ui(self):
         title = build_label(
