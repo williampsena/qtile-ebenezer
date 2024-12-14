@@ -1,12 +1,14 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
+import pytest
 import ttkbootstrap as ttk
 
 from ebenezer.config.settings import AppSettings
 from ebenezer.ui.settings.about_frame import AboutFrame
 
 
+@pytest.mark.ui
 class TestAboutFrame(unittest.TestCase):
 
     @patch("ebenezer.ui.settings.about_frame.build_fonts")

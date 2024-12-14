@@ -27,6 +27,12 @@ activate:
 test:
 	$(PIPENV) run pytest $(file)  $(args)
 
+test-non-ui:
+	$(PIPENV) run pytest -m "not ui" $(file)  $(args)
+
+test-ui:
+	$(PIPENV) run pytest -m "ui" $(file)  $(args)
+
 format:
 	$(PIPENV) run autoflake --remove-all-unused-imports --in-place --recursive .
 	$(PIPENV) run isort .

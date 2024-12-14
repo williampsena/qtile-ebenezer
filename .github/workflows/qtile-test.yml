@@ -42,5 +42,12 @@ jobs:
 
     - name: Run tests
       run: |
-        make test
+        make test-non-ui
+      working-directory: ./
+
+    - name: Run ui tests
+      run: |
+        export DISPLAY=:99
+        Xvfb :99 &
+        make test-ui
       working-directory: ./
