@@ -1,6 +1,8 @@
 import os
+
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+
 from ebenezer.commands.helpers import run_command
 from ebenezer.config.settings import AppSettings
 from ebenezer.core.files import resolve_file_path

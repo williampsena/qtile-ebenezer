@@ -1,7 +1,7 @@
 from typing import Any
 
 import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
+
 from ebenezer.config.settings import AppSettings
 from ebenezer.ui.settings.styles import build_fonts
 

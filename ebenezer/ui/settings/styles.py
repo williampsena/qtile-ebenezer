@@ -1,5 +1,6 @@
-from ebenezer.config.settings import AppSettings
 from typing import NamedTuple
+
+from ebenezer.config.settings import AppSettings
 
 
 class FontStyle(NamedTuple):

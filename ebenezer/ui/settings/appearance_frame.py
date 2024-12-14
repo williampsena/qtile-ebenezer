@@ -9,7 +9,7 @@ from ebenezer.config.settings import AppSettings
 from ebenezer.core.files import resolve_file_path
 from ebenezer.core.yaml import update_yaml_property
 from ebenezer.ui.settings.styles import build_fonts
-from ebenezer.ui.settings.widgets.field import build_form, FormField
+from ebenezer.ui.settings.widgets.field import FormField, build_form
 from ebenezer.ui.settings.widgets.result_message import ResultMessageWidget
 
 COLORS_CONFIG_FILE = resolve_file_path("$qtile_home/colors.yml")

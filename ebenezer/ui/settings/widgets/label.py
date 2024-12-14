@@ -1,10 +1,9 @@
 import webbrowser
 
 import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
 
 from ebenezer.config.settings import AppSettings
-from ebenezer.ui.settings.styles import FontStyle, FontStyles
+from ebenezer.ui.settings.styles import FontStyles
 
 
 def _open_url(url):

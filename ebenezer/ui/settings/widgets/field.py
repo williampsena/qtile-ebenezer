@@ -1,8 +1,10 @@
-from ttkbootstrap.constants import *
-from ebenezer.config.settings import AppSettings
-from ebenezer.ui.settings.styles import FontStyles, build_fonts
-import ttkbootstrap as ttk
 from typing import NamedTuple
+
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
+
+from ebenezer.config.settings import AppSettings
+from ebenezer.ui.settings.styles import build_fonts
 
 
 class FormField(NamedTuple):

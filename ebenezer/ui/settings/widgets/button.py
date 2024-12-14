@@ -1,7 +1,5 @@
 import ttkbootstrap as ttk
 
-from ebenezer.ui.settings.styles import FontStyle
-
 
 def build_button(
     parent_frame: ttk.Frame, text: str, bootstyle: str = None, command: callable = None

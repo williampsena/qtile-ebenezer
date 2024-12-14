@@ -1,8 +1,8 @@
 import webbrowser
 
+import pkg_resources
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-import pkg_resources
 
 from ebenezer.config.settings import AppSettings
 from ebenezer.ui.settings.styles import build_fonts

@@ -1,13 +1,13 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+
 from ebenezer.config.settings import load_settings_by_files
 from ebenezer.core.theme import apply_theme_color
+from ebenezer.ui.settings.about_frame import AboutFrame
 from ebenezer.ui.settings.appearance_frame import AppearanceFrame
 from ebenezer.ui.settings.styles import build_fonts
 from ebenezer.ui.settings.wallpaper_frame import WallpaperFrame
-from ebenezer.ui.settings.about_frame import AboutFrame
 from ebenezer.ui.settings.widgets.style import build_style
-
 
 THEME_NAME = "superhero"
 
