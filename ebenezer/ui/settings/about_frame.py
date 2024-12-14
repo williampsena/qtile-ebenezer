@@ -1,6 +1,6 @@
+import importlib.metadata
 import webbrowser
 
-import importlib.metadata
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 

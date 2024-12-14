@@ -1,6 +1,8 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import ttkbootstrap as ttk
+
 from ebenezer.config.settings import AppSettings
 from ebenezer.ui.settings.about_frame import AboutFrame
 
