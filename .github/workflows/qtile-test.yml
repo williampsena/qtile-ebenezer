@@ -8,12 +8,14 @@ on:
       - nightly
     paths:
       - 'ebenezer/**'
+      - '.github/workflows/**'
   pull_request:
     branches:
       - main
       - nightly
     paths:
       - 'ebenezer/**'
+      - '.github/workflows/**'
 
 jobs:
   test:
