@@ -5,6 +5,7 @@
 * {
     background-color:       @background;
     text-color:             @foreground;
+    font:                   "Inter Bold 14";
     opacity: 1.0; 
 }
 
@@ -18,7 +19,7 @@ window {
     location:                    center;
     anchor:                      center;
     fullscreen:                  false;
-    width:                       800px;
+    width:                       400px;
     x-offset:                    0px;
     y-offset:                    0px;
 
@@ -41,9 +42,9 @@ mainbox {
 message {
     enabled:                     true;
     margin:                      0px;
-    padding:                     20px;
+    padding:                     10px;
     border-radius:               0px;
-    background-color:            @fg-selected;
+    background-color:            @active;
     text-color:                  @background;
 }
 textbox {
@@ -56,8 +57,8 @@ textbox {
 /*****----- Listview -----*****/
 listview {
     enabled:                     true;
-    columns:                     2;
-    lines:                       3;
+    columns:                     1;
+    lines:                       2;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;
@@ -84,8 +85,7 @@ element {
 }
 
 element-text {
-    font:						"Fira Code Nerd Font Bold 32";
-    font-size:				     32;
+    font:						"Fira Code Nerd Font Bold 14";
     background-color:            transparent;
     text-color:                  inherit;
     cursor:                      inherit;
@@ -97,11 +97,3 @@ element selected.normal {
     background-color:            var(selected);
     text-color:                  var(background);
 }
-
-/* Positions */
-
-window { location: center; anchor: center; fullscreen: false; width: 350px; }
-mainbox { orientation: vertical; children: [ "message", "listview" ]; }
-listview {columns: 2; lines: 1;}
-element-text {horizontal-align: 0.5;}
-textbox {horizontal-align: 0.5;}

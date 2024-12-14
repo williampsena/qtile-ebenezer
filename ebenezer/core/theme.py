@@ -129,18 +129,32 @@ def preload_colors(settings: AppSettings) -> AppSettings:
     Returns:
         AppSettings: The updated application settings with applied theme.
     """
-    theme = settings.colors.theme
 
-    if theme:
-        settings = _apply_theme_color(theme, settings)
-
-    apply_rofi_style(settings)
+    _apply_rofi_style(settings)
     _apply_dusnt_style(settings)
 
     return settings
 
 
-def _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSettings:
+def apply_theme_color(settings: AppSettings) -> AppSettings:
+    """
+    Applies the theme color to the given application settings.
+
+    Args:
+        settings (AppSettings): The application settings that include color configurations.
+
+    Returns:
+        AppSettings: The updated application settings with the applied theme color.
+    """
+    theme = settings.colors.theme
+
+    if theme:
+        settings = _apply_theme_color(theme, settings)
+
+    return settings
+
+
+def _apply_theme_color(raw_theme_filepath: str, settings: AppSettings) -> AppSettings:
     """
     Applies theme colors from a YAML file.
 
@@ -152,7 +166,7 @@ def _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSetting
         AppSettings: The updated application settings with applied theme colors.
     """
     try:
-        theme_filepath = resolve_file_path(theme_filepath)
+        theme_filepath = resolve_file_path(raw_theme_filepath)
 
         if not Path(theme_filepath).exists():
             logger.warning(f"Not found the selected theme {theme_filepath}.")
@@ -165,6 +179,7 @@ def _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSetting
         )
 
         settings.colors = AppSettingsColors(**args)
+        settings.colors.theme = raw_theme_filepath
 
         return settings
     except Exception as e:
@@ -172,7 +187,7 @@ def _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSetting
         return settings
 
 
-def apply_rofi_style(settings: AppSettings):
+def _apply_rofi_style(settings: AppSettings):
     """
     Applies the Rofi style based on the provided settings.
 

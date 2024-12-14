@@ -1,6 +1,6 @@
 # Qtile Ebenezer 🪨
 
-This repository provides a collection of widgets and behaviors spanning Desktop to Qtile Tiling Window Manager.
+This project offers a range of widgets and behaviors, from Desktop to Qtile Tiling Window Manager.
 
 
 # The name

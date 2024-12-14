@@ -2,32 +2,59 @@ import os
 import tempfile
 import unittest
 
-from ebenezer.core.yaml import read_yaml_file
+import yaml
+
+from ebenezer.core.yaml import read_yaml_file, update_yaml_property, write_yaml_file
 
 
-class TestReadYamlFile(unittest.TestCase):
+class TestYamlFunctions(unittest.TestCase):
+
     def test_read_yaml_file(self):
         with tempfile.NamedTemporaryFile(
-            delete=False, mode="w", suffix=".yaml"
+            delete=False, mode="w", encoding="utf-8"
         ) as temp_file:
-            temp_file.write(
-                """
-            key1: value1
-            key2:
-              subkey1: subvalue1
-              subkey2: subvalue2
-            """
-            )
+            temp_file.write("theme: old_theme\n")
             temp_file_path = temp_file.name
 
         try:
-            result = read_yaml_file(temp_file_path)
+            expected_data = {"theme": "old_theme"}
+            data = read_yaml_file(temp_file_path)
+            self.assertEqual(data, expected_data)
+        finally:
+            os.remove(temp_file_path)
 
-            expected_result = {
-                "key1": "value1",
-                "key2": {"subkey1": "subvalue1", "subkey2": "subvalue2"},
-            }
-            self.assertEqual(result, expected_result)
+    def test_write_yaml_file(self):
+        data = {"theme": "new_theme"}
+        with tempfile.NamedTemporaryFile(
+            delete=False, mode="w", encoding="utf-8"
+        ) as temp_file:
+            temp_file_path = temp_file.name
+
+        try:
+            write_yaml_file(temp_file_path, data)
+            with open(temp_file_path, "r", encoding="utf-8") as file:
+                written_data = yaml.safe_load(file)
+            self.assertEqual(written_data, data)
+        finally:
+            os.remove(temp_file_path)
+
+    def test_update_yaml_property(self):
+        with tempfile.NamedTemporaryFile(
+            delete=False, mode="w", encoding="utf-8"
+        ) as temp_file:
+            temp_file.write("theme:\n  selected: old_theme\n  override: true\n")
+            temp_file_path = temp_file.name
+
+        try:
+            property_path = "theme.selected"
+            new_value = "new_theme"
+            expected_data = {"theme": {"selected": "new_theme", "override": True}}
+
+            update_yaml_property(temp_file_path, property_path, new_value)
+
+            with open(temp_file_path, "r", encoding="utf-8") as file:
+                updated_data = yaml.safe_load(file)
+            self.assertEqual(updated_data, expected_data)
         finally:
             os.remove(temp_file_path)
 

@@ -15,6 +15,9 @@ typer = "*"
 setuptools-scm = "*"
 mypy = "*"
 installer = "*"
+ttkbootstrap = "*"
+tk = "*"
+"ruamel.yaml" = "*"
 
 [dev-packages]
 black = "*"

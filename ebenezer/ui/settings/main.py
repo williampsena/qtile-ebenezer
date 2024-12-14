@@ -1,0 +1,137 @@
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
+from ebenezer.config.settings import load_settings_by_files
+from ebenezer.core.theme import apply_theme_color
+from ebenezer.ui.settings.appearance_frame import AppearanceFrame
+from ebenezer.ui.settings.styles import build_fonts
+from ebenezer.ui.settings.wallpaper_frame import WallpaperFrame
+from ebenezer.ui.settings.about_frame import AboutFrame
+from ebenezer.ui.settings.widgets.style import build_style
+
+
+THEME_NAME = "superhero"
+
+
+class EbenezerManager(ttk.Frame):
+    def __init__(self, master, theme_name: str):
+        super().__init__(master)
+        self.pack(fill=BOTH, expand=YES)
+
+        self.theme_name = theme_name
+        self.load_settings()
+        self.fonts = build_fonts(self.settings)
+        self.styles = build_style(self.settings, self.theme_name, self)
+
+        self.build_ui()
+
+    def load_settings(self):
+        self.settings = load_settings_by_files()
+        self.settings = apply_theme_color(self.settings)
+
+    def _close_window(self):
+        self.quit()
+
+    def _handle_change_tab(
+        self, tab_name: str, buttons: dict[str, ttk.Button]
+    ) -> callable:
+        def _inner(_):
+            for button in buttons.values():
+                button.config(style="Tab.TLabel")
+
+            buttons.get(tab_name).config(style="TabSelected.TLabel")
+            self._show_tab(tab_name)
+
+        return _inner
+
+    def _sidebar(self):
+        tabs = {
+            "appearance": {
+                "label": "   appearance",
+                "build": self._build_appearance_tab,
+            },
+            "wallpaper": {
+                "label": "󰸉   wallpaper",
+                "build": self._build_wallpaper_tab,
+            },
+            "about": {"label": "   about", "build": self._build_about_tab},
+            "quit": {"label": "󰅙   close"},
+        }
+
+        self.sidebar_frame = ttk.Frame(self, width=10, style="Sidebar.TFrame")
+        self.sidebar_frame.pack(side="left", fill="y")
+
+        self.tab_frames: dict[str, ttk.Frame] = {}
+
+        buttons: dict[str, ttk.Button] = {}
+
+        for tab_name in tabs:
+            tab = tabs.get(tab_name)
+            tab_label = tab.get("label")
+            tab_build = tab.get("build")
+
+            button = ttk.Label(
+                self.sidebar_frame,
+                text=tab_label,
+                anchor="w",
+                cursor="hand2",
+                style="Tab.TLabel",
+            )
+            buttons[tab_name] = button
+            button.pack(side="top", fill="x", expand=False, padx=10, pady=0)
+
+            if callable(tab_build):
+                tab_frame = tab_build(self)
+            else:
+                tab_frame = ttk.Frame(self)
+
+            self.tab_frames[tab_name] = tab_frame
+
+        for tab_name in buttons:
+            button = buttons.get(tab_name)
+            button.bind(
+                "<Button-1>", self._handle_change_tab(tab_name, buttons=buttons)
+            )
+
+        self._handle_change_tab("appearance", buttons=buttons)(None)
+
+    def _build_appearance_tab(self, parent: ttk.Frame):
+        return AppearanceFrame(
+            app=self,
+            settings=self.settings,
+            parent=parent,
+        )
+
+    def _build_wallpaper_tab(self, parent: ttk.Frame):
+        return WallpaperFrame(
+            app=self,
+            settings=self.settings,
+            parent=parent,
+        )
+
+    def _build_about_tab(self, parent: ttk.Frame):
+        return AboutFrame(
+            app=self,
+            settings=self.settings,
+            parent=parent,
+        )
+
+    def _show_tab(self, tab: str):
+        if tab == "quit":
+            return self._close_window()
+
+        for tab_name, tab_frame in self.tab_frames.items():
+            tab_frame.pack_forget()
+
+            if tab_name == tab:
+                tab_frame.pack(side="top", fill="x", expand=False, padx=10, pady=10)
+                tab_frame.tkraise()
+
+    def build_ui(self):
+        self._sidebar()
+
+
+def main():
+    app = ttk.Window("ebenezer - configuration manager", themename=THEME_NAME)
+    app.geometry("600x400")
+    EbenezerManager(app, theme_name=THEME_NAME)
+    app.mainloop()

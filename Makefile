@@ -24,11 +24,8 @@ install:
 activate:
 	$(PIPENV) shell
 
-check:
-	$(PIPENV) run qtile check
-
 test:
-	$(PIPENV) run pytest --cov=ebenezer --cov-report=term-missing --maxfail=5 --disable-warnings $(file)  $(args)
+	$(PIPENV) run pytest $(file)  $(args)
 
 format:
 	$(PIPENV) run autoflake --remove-all-unused-imports --in-place --recursive .
