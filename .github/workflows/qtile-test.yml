@@ -5,11 +5,13 @@ on:
   push:
     branches:
       - main
+      - nightly
     paths:
       - 'ebenezer/**'
   pull_request:
     branches:
       - main
+      - nightly
     paths:
       - 'ebenezer/**'
 
