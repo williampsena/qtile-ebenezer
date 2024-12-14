@@ -7,6 +7,7 @@ from ebenezer.commands.helpers import run_command
 from ebenezer.config.settings import AppSettings
 from ebenezer.core.files import resolve_file_path
 from ebenezer.core.yaml import update_yaml_property
+from ebenezer.ui.settings.helpers import restart_qtile
 from ebenezer.ui.settings.styles import build_fonts
 from ebenezer.ui.settings.widgets.field import FormField, build_form
 from ebenezer.ui.settings.widgets.result_message import ResultMessageWidget
@@ -36,7 +37,7 @@ class WallpaperFrame(ttk.Frame):
 
         fields = [
             FormField(
-                label="Path",
+                label="  Path",
                 value=self.settings.environment.wallpaper_dir,
                 type="text",
                 on_value_change=lambda _, v: self.settings_changes.update(
@@ -44,7 +45,7 @@ class WallpaperFrame(ttk.Frame):
                 ),
             ),
             FormField(
-                label="Timeout",
+                label="  Timeout",
                 value=self.settings.environment.wallpaper_timeout,
                 type="number",
                 on_value_change=lambda _, v: self.settings_changes.update(
@@ -69,9 +70,6 @@ class WallpaperFrame(ttk.Frame):
         )
         sub_btn.pack(side=RIGHT, padx=5)
         sub_btn.focus_set()
-
-    def _restart_qtile(self):
-        os.system("qtile cmd-obj -o cmd -f restart")
 
     def _reload_wallpaper(self):
         wallpaper_dir = self.settings_changes["environment.wallpaper_dir"]
@@ -98,7 +96,7 @@ class WallpaperFrame(ttk.Frame):
                 )
                 return
 
-            self._restart_qtile()
+            restart_qtile()
             self._reload_wallpaper()
             self.result_message.set_message(
                 "success", f"✅ Appearance updated successfully"

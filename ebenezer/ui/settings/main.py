@@ -5,6 +5,7 @@ from ebenezer.config.settings import load_settings_by_files
 from ebenezer.core.theme import apply_theme_color
 from ebenezer.ui.settings.about_frame import AboutFrame
 from ebenezer.ui.settings.appearance_frame import AppearanceFrame
+from ebenezer.ui.settings.environment_frame import EnvironmentFrame
 from ebenezer.ui.settings.styles import build_fonts, build_style
 from ebenezer.ui.settings.wallpaper_frame import WallpaperFrame
 
@@ -45,15 +46,19 @@ class EbenezerManager(ttk.Frame):
     def _sidebar(self):
         tabs = {
             "appearance": {
-                "label": "   appearance",
+                "label": " ",
                 "build": self._build_appearance_tab,
             },
             "wallpaper": {
-                "label": "󰸉   wallpaper",
+                "label": "󰸉 ",
                 "build": self._build_wallpaper_tab,
             },
-            "about": {"label": "   about", "build": self._build_about_tab},
-            "quit": {"label": "󰅙   close"},
+            "environment": {
+                "label": "󰘦 ",
+                "build": self._build_environment_tab,
+            },
+            "about": {"label": " ", "build": self._build_about_tab},
+            "quit": {"label": "󰅙 "},
         }
 
         self.sidebar_frame = ttk.Frame(self, width=10, style="Sidebar.TFrame")
@@ -76,7 +81,7 @@ class EbenezerManager(ttk.Frame):
                 style="Tab.TLabel",
             )
             buttons[tab_name] = button
-            button.pack(side="top", fill="x", expand=False, padx=10, pady=0)
+            button.pack(side="top", fill="x", expand=False, padx=(10, 20), pady=10)
 
             if callable(tab_build):
                 tab_frame = tab_build(self)
@@ -102,6 +107,13 @@ class EbenezerManager(ttk.Frame):
 
     def _build_wallpaper_tab(self, parent: ttk.Frame):
         return WallpaperFrame(
+            app=self,
+            settings=self.settings,
+            parent=parent,
+        )
+
+    def _build_environment_tab(self, parent: ttk.Frame):
+        return EnvironmentFrame(
             app=self,
             settings=self.settings,
             parent=parent,

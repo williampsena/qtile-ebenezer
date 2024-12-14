@@ -11,7 +11,7 @@ def test_parse_monitoring():
         medium_color="fg_yellow",
         threshold_medium=70,
         threshold_high=90,
-        burn=True,
+        burn="yes",
     )
 
     assert monitoring.__dict__ == expected.__dict__

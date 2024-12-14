@@ -48,6 +48,7 @@ class AppSettingsEnvironment:
             str(kwargs.get("wallpaper_timeout", self.wallpaper_timeout))
         )
         self.theme = str(kwargs.get("theme", self.theme))
+        self.backlight_name = str(kwargs.get("backlight_name", self.backlight_name))
         self.os_logo = str(kwargs.get("os_logo", self.os_logo))
         self.os_logo_icon = str(kwargs.get("os_logo_icon", self.os_logo_icon))
         self.os_logo_icon_color = str(

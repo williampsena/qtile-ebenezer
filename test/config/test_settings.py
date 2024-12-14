@@ -122,7 +122,7 @@ def test_parse_settings():
             medium_color="fg_yellow",
             threshold_medium=70,
             threshold_high=90,
-            burn=True,
+            burn="yes",
         ),
     )
 

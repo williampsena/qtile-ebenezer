@@ -8,18 +8,17 @@ from ttkbootstrap.constants import *
 from ebenezer.config.settings import AppSettings
 from ebenezer.core.files import resolve_file_path
 from ebenezer.core.yaml import update_yaml_property
+from ebenezer.ui.settings.helpers import restart_qtile
 from ebenezer.ui.settings.styles import build_fonts
 from ebenezer.ui.settings.widgets.field import FormField, build_form
 from ebenezer.ui.settings.widgets.result_message import ResultMessageWidget
 
 COLORS_CONFIG_FILE = resolve_file_path("$qtile_home/colors.yml")
-SETTINGS_CONFIG_FILE = resolve_file_path("$qtile_home/config.yml")
 THEMES_DIR = resolve_file_path("$qtile_home/conf/themes")
 
 
 class AppearanceFrame(ttk.Frame):
     color_changes: dict[str, str] = {}
-    settings_changes: dict[str, str] = {}
 
     def __init__(self, settings: AppSettings, app: ttk.Frame, parent):
         super().__init__(parent)
@@ -27,9 +26,6 @@ class AppearanceFrame(ttk.Frame):
         self.settings = settings
         self.fonts = build_fonts(settings)
         self._build_ui()
-
-    def _restart_qtile(self):
-        os.system("qtile cmd-obj -o cmd -f restart")
 
     def _load_themes(self):
         themes: list[str] = [""]
@@ -41,17 +37,14 @@ class AppearanceFrame(ttk.Frame):
     def _update_config(self):
         try:
             colors_updated = self._update_colors_config()
-            settings_updated = self._update_settings_config()
 
-            updated = colors_updated or settings_updated
-
-            if not updated:
+            if not colors_updated:
                 self.result_message.set_message(
                     "error", f"✅ No appearance settings to update"
                 )
                 return
 
-            self._restart_qtile()
+            restart_qtile()
             self.result_message.set_message(
                 "success", f"✅ Appearance updated successfully"
             )
@@ -59,15 +52,6 @@ class AppearanceFrame(ttk.Frame):
             self.result_message.set_message(
                 "error", f"❌ Failed to update appearance settings: {e}"
             )
-
-    def _update_settings_config(self) -> bool:
-        if not self.settings_changes:
-            return False
-
-        for key, value in self.settings_changes.items():
-            update_yaml_property(SETTINGS_CONFIG_FILE, key, value)
-
-        return True
 
     def _update_colors_config(self) -> bool:
         if not self.color_changes:
@@ -78,7 +62,7 @@ class AppearanceFrame(ttk.Frame):
 
         return True
 
-    def _apply_theme_event(self):
+    def _apply_event(self):
         self._update_config()
 
     def get_applied_theme(self, settings: AppSettings):
@@ -103,7 +87,7 @@ class AppearanceFrame(ttk.Frame):
         sub_btn = ttk.Button(
             master=container,
             text="  Apply",
-            command=self._apply_theme_event,
+            command=self._apply_event,
             bootstyle=SUCCESS,
             width=10,
         )
@@ -115,7 +99,7 @@ class AppearanceFrame(ttk.Frame):
 
         fields = [
             FormField(
-                label="Theme",
+                label="󰉦  Theme",
                 value=self.get_applied_theme(self.settings),
                 type="list",
                 on_value_change=lambda _, v: self.color_changes.update(
