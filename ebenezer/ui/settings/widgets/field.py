@@ -63,6 +63,8 @@ class WidgetField:
                 width=300,
                 style="Form.TCombobox",
             )
+
+            self.field.set(self.form_field.value)
         else:
             self.field = ttk.Entry(
                 master=self.container,

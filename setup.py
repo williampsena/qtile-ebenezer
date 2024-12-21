@@ -13,17 +13,17 @@ setup(
     include_package_data=True,
     package_data={"ebenezer": ["py.typed"]},
     install_requires=[
-        "requests>=2.32.3",
-        "qtile>=0.29.0",
-        "pillow>=11.0.0",
-        "psutil>=6.1.0",
-        "pyyaml>=6.0.2",
-        "cairocffi>=1.7.1",
-        "typer[all]",
+        "requests>=2.34.0",
+        "qtile>=0.30.0",
+        "pillow>=11.1.0",
+        "psutil>=6.2.0",
+        "ruamel.yaml>=0.17.0",
+        "cairocffi>=1.8.0",
+        "click>=8.0.0",
     ],
     entry_points={
         "console_scripts": [
-            "ebenezer=ebenezer.commands.app:app",
+            "ebenezer=ebenezer.commands.app:cli",
         ],
     },
     classifiers=[

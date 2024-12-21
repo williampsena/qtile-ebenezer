@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import yaml
+import ruamel.yaml
 
 from ebenezer.config.settings import AppSettings, AppSettingsColors
 from ebenezer.core.theme import _apply_theme_color
@@ -21,6 +21,7 @@ class TestApplyThemeColor(unittest.TestCase):
         theme_filepath = Path(self.test_dir) / "theme.yaml"
         theme_data = {"colors": {"fg_black": "#FFFFFF", "fg_white": "#000000"}}
         with open(theme_filepath, "w") as f:
+            yaml = ruamel.yaml.YAML()
             yaml.dump(theme_data, f)
 
         settings = AppSettings(

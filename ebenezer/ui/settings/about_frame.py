@@ -30,7 +30,10 @@ class AboutFrame(ttk.Frame):
         webbrowser.open_new(url)
 
     def _version(self):
-        return importlib.metadata.version("qtile-ebenezer")
+        try:
+            return importlib.metadata.version("qtile-ebenezer")
+        except:
+            return "dev"
 
     def _build_ui(self):
         title = build_label(

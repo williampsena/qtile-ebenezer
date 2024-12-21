@@ -2,9 +2,14 @@ import os
 import tempfile
 import unittest
 
-import yaml
+from ruamel.yaml import YAML
 
 from ebenezer.core.yaml import read_yaml_file, update_yaml_property, write_yaml_file
+
+
+def _yaml_safe_load(file: str):
+    yaml = YAML(typ="safe", pure=True)
+    return yaml.load(file)
 
 
 class TestYamlFunctions(unittest.TestCase):
@@ -33,7 +38,7 @@ class TestYamlFunctions(unittest.TestCase):
         try:
             write_yaml_file(temp_file_path, data)
             with open(temp_file_path, "r", encoding="utf-8") as file:
-                written_data = yaml.safe_load(file)
+                written_data = _yaml_safe_load(file)
             self.assertEqual(written_data, data)
         finally:
             os.remove(temp_file_path)
@@ -53,7 +58,7 @@ class TestYamlFunctions(unittest.TestCase):
             update_yaml_property(temp_file_path, property_path, new_value)
 
             with open(temp_file_path, "r", encoding="utf-8") as file:
-                updated_data = yaml.safe_load(file)
+                updated_data = _yaml_safe_load(file)
             self.assertEqual(updated_data, expected_data)
         finally:
             os.remove(temp_file_path)

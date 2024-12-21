@@ -1,3 +1,5 @@
+import importlib
+
 import click
 
 from ebenezer.commands.backlight import cli as backlight_cli
@@ -5,8 +7,14 @@ from ebenezer.commands.ui import cli as ui_cli
 from ebenezer.commands.volume import cli as volume_cli
 from ebenezer.commands.wallpaper import cli as wallpaper_cli
 
+try:
+    __version__ = importlib.metadata.version("qtile-ebenezer")
+except:
+    __version__ = "dev"
 
-@click.group()
+
+@click.group(invoke_without_command=True, no_args_is_help=True)
+@click.version_option(__version__)
 def cli():
     pass
 
