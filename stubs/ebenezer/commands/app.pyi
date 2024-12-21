@@ -1,3 +1,5 @@
 from _typeshed import Incomplete
 
-app: Incomplete
+__version__: Incomplete
+
+def cli() -> None: ...
