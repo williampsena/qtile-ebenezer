@@ -1,16 +1,20 @@
-import typer
+import click
 
-from ebenezer.commands.backlight import app as backlight_app
-from ebenezer.commands.ui import app as ui_app
-from ebenezer.commands.volume import app as volume_app
-from ebenezer.commands.wallpaper import app as wallpaper_app
+from ebenezer.commands.backlight import cli as backlight_cli
+from ebenezer.commands.ui import cli as ui_cli
+from ebenezer.commands.volume import cli as volume_cli
+from ebenezer.commands.wallpaper import cli as wallpaper_cli
 
-app = typer.Typer()
 
-app.add_typer(backlight_app, name="backlight")
-app.add_typer(wallpaper_app, name="wallpaper")
-app.add_typer(volume_app, name="volume")
-app.add_typer(ui_app, name="ui")
+@click.group()
+def cli():
+    pass
+
+
+cli.add_command(backlight_cli, name="backlight")
+cli.add_command(wallpaper_cli, name="wallpaper")
+cli.add_command(volume_cli, name="volume")
+cli.add_command(ui_cli, name="ui")
 
 if __name__ == "__main__":
-    app()
+    cli()

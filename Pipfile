@@ -18,6 +18,7 @@ installer = "*"
 ttkbootstrap = "*"
 tk = "*"
 "ruamel.yaml" = "*"
+click = "*"
 
 [dev-packages]
 black = "*"

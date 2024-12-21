@@ -39,7 +39,7 @@ format:
 	$(PIPENV) run black .
 
 clean:
-	-rm -rf dist qtile.egg-info docs/_build build/ .tox/ .mypy_cache/ .pytest_cache/ .eggs/ pkg/
+	-rm -rf dist qtile.egg-info docs/_build build/ .tox/ .mypy_cache/ .pytest_cache/ .eggs/ pkg/ qtile-ebenezer qtile_ebenezer.egg-info
 
 truncate-logs:
 	truncate -s0 ~/.local/share/qtile/qtile.log 
@@ -89,6 +89,7 @@ test-build:
 	qtile-ebenezer/usr/bin/ebenezer --help
 
 local-install:
+	# NOTE: remember to run outside of the virtualenv
 	$(MAKE) aur-clean
 	python -m build --wheel --outdir "qtile-ebenezer/dist"
 	python -m installer --destdir="$(PWD)/qtile-ebenezer" qtile-ebenezer/dist/*.whl

@@ -1,32 +1,36 @@
-import typer
+import click
 
 from ebenezer.commands.helpers import run_command
 
-app = typer.Typer()
+
+@click.group()
+def cli():
+    pass
 
 
-@app.command("level")
-def backlight_level():
+@cli.command()
+def level():
     level = _do_backlight_level()
-    typer.echo(level)
+    click.echo(level)
 
 
-@app.command("up")
-def backlight_up():
+@cli.command()
+def up():
     _do_backlight_up()
-    typer.echo("Backlight increased by 10%")
+    click.echo("Backlight increased by 10%")
 
 
-@app.command("down")
-def backlight_down():
+@cli.command()
+def down():
     _do_backlight_down()
-    typer.echo("Backlight decreased by 10%")
+    click.echo("Backlight decreased by 10%")
 
 
-@app.command("set")
-def backlight_set(level: int):
+@cli.command()
+@click.argument("level", type=int)
+def set(level: int):
     _do_backlight_set(level)
-    typer.echo(f"Backlight changed to {level}%")
+    click.echo(f"Backlight changed to {level}%")
 
 
 def _do_backlight_level() -> str:
@@ -50,4 +54,4 @@ def _do_backlight_set(level: int):
 
 
 if __name__ == "__main__":
-    app()
+    cli()

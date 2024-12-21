@@ -1,58 +1,61 @@
-import typer
+import click
 
 from ebenezer.commands.helpers import run_command
 
-app = typer.Typer()
+
+@click.group()
+def cli():
+    pass
 
 
-@app.command("level")
-def volume_level():
+@cli.command()
+def level():
     command = "pactl list sinks | grep 'Volume:' | head -n 1 | awk '{print $5}' | tail -n 1 | grep -o '[0-9]\\+'"
     level = run_command(command)
-    typer.echo(level)
+    click.echo(level)
 
 
-@app.command("up")
-def volume_up():
+@cli.command()
+def up():
     command = "pactl set-sink-volume @DEFAULT_SINK@ +5%"
     run_command(command)
-    typer.echo("Volume increased by 5%")
+    click.echo("Volume increased by 5%")
 
 
-@app.command("down")
-def volume_down():
+@cli.command()
+def down():
     command = "pactl set-sink-volume @DEFAULT_SINK@ -5%"
     run_command(command)
-    typer.echo("Volume decreased by 5%")
+    click.echo("Volume decreased by 5%")
 
 
-@app.command("mute_toggle")
+@cli.command()
 def mute_toggle():
     command = "pactl set-sink-mute @DEFAULT_SINK@ toggle"
     run_command(command)
-    typer.echo("Mute toggled")
+    click.echo("Mute toggled")
 
 
-@app.command("mute_on")
+@cli.command()
 def mute_on():
     command = "pactl set-sink-mute @DEFAULT_SINK@ 1"
     run_command(command)
-    typer.echo("Mute on")
+    click.echo("Mute on")
 
 
-@app.command("mute_off")
+@cli.command()
 def mute_off():
     command = "pactl set-sink-mute @DEFAULT_SINK@ 0"
     run_command(command)
-    typer.echo("Mute off")
+    click.echo("Mute off")
 
 
-@app.command("mute_status")
+@cli.command()
 def mute_status():
     command = "pactl list sinks | grep 'Mute:' | head -n 1 | awk '{print $2}'"
-    run_command(command)
-    typer.echo("Mute off")
+    status = run_command(command)
+    click.echo(status)
 
 
 if __name__ == "__main__":
-    app()
+    cli()

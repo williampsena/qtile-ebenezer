@@ -1,4 +1,5 @@
 from _typeshed import Incomplete
+
 from ebenezer.commands.helpers import run_command as run_command
 
 app: Incomplete
