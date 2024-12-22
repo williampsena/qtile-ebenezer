@@ -27,11 +27,8 @@ def confirm_cmd(title, question, theme):
     )
 
 
-def main():
+def main(title: str = "Confirmations", question: str = "Are you sure?"):
     theme_file = pkg_resources.files("ebenezer.rofi.modals").joinpath("confirm.rasi")
-    title = "Confirmations"
-    question = "Are you sure?"
-
     choice = confirm_cmd(title, question, theme_file)
 
     if choice == YES_LABEL:

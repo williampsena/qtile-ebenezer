@@ -129,6 +129,10 @@ def preload_colors(settings: AppSettings) -> AppSettings:
     Returns:
         AppSettings: The updated application settings with applied theme.
     """
+    theme = settings.colors.theme
+
+    if theme:
+        settings = _apply_theme_color(theme, settings)
 
     _apply_rofi_style(settings)
     _apply_dusnt_style(settings)
