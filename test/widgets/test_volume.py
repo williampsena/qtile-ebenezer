@@ -50,66 +50,62 @@ class TestBuildVolumeWidget(unittest.TestCase):
         self.assertEqual(volume_widget.fontsize, 14)
         self.assertEqual(volume_widget.padding, 10)
 
-    @patch("ebenezer.widgets.volume.run_shell_command_stdout")
-    def test_get_current_volume(self, mock_run_shell_command_stdout):
-        mock_run_shell_command_stdout.return_value.stdout = "50%\n"
-        result = _get_current_volume(self.settings)
-        self.assertEqual(result, "50")
+    @patch("ebenezer.widgets.volume.volume_cmd.get_volume_level")
+    def test_get_current_volume(self, mock_get_volume_level):
+        mock_get_volume_level.return_value = "50%\n"
+        result = _get_current_volume()
+        self.assertEqual(result, 50)
 
-    @patch("ebenezer.widgets.volume.run_shell_command_stdout")
-    def test_is_muted(self, mock_run_shell_command_stdout):
-        mock_run_shell_command_stdout.return_value.stdout = "yes\n"
-        result = _is_muted(self.settings)
+    @patch("ebenezer.widgets.volume.volume_cmd.volume_mute_status")
+    def test_is_muted(self, mock_volume_mute_status):
+        mock_volume_mute_status.return_value = "yes\n"
+        result = _is_muted()
         self.assertTrue(result)
 
     @patch("ebenezer.widgets.volume.push_notification_progress")
-    @patch("ebenezer.widgets.volume._get_current_volume")
+    @patch("ebenezer.widgets.volume.volume_cmd.get_volume_level")
     def test_push_volume_notification(
-        self, mock_get_current_volume, mock_push_notification_progress
+        self, mock_get_volume_level, mock_push_notification_progress
     ):
-        mock_get_current_volume.return_value = "50"
-        _push_volume_notification(self.settings, "Volume")
+        mock_get_volume_level.return_value = "50"
+        _push_volume_notification("Volume")
         mock_push_notification_progress.assert_called_once_with(
             message="Volume 50%", progress=50
         )
 
-    @patch("ebenezer.widgets.volume._get_current_volume")
     @patch("ebenezer.widgets.volume._unmute")
-    @patch("ebenezer.widgets.volume.run_shell_command")
-    def test_do_volume_up(
-        self, mock_run_shell_command, mock_unmute, mock_get_current_volume
-    ):
-        mock_get_current_volume.return_value = "50"
+    @patch("ebenezer.widgets.volume.volume_cmd.get_volume_level")
+    def test_do_volume_up(self, mock_get_volume_level, mock_unmute):
+        mock_get_volume_level.return_value = "50"
 
-        _do_volume_up(self.settings.commands.get("volume_up"), self.settings)
+        _do_volume_up()
 
-        mock_get_current_volume.assert_called_with(self.settings)
-        mock_unmute.assert_called_once_with(self.settings)
-        mock_run_shell_command.assert_called_once_with("echo 'Volume Up'")
+        mock_get_volume_level.assert_called_with()
+        mock_unmute.assert_called_once_with()
 
-    @patch("ebenezer.widgets.volume.run_shell_command")
-    def test_do_volume_down(self, mock_run_shell_command):
-        _do_volume_down(self.settings.commands.get("volume_down"), self.settings)
+    @patch("ebenezer.widgets.volume.volume_cmd.volume_down")
+    def test_do_volume_down(self, mock_volume_down):
+        _do_volume_down()
 
-        mock_run_shell_command.assert_called_once_with("echo 'Volume Down'")
+        mock_volume_down.assert_called_once_with()
 
-    @patch("ebenezer.widgets.volume.run_shell_command")
+    @patch("ebenezer.widgets.volume.volume_cmd.volume_mute_toggle")
     @patch("ebenezer.widgets.volume.push_notification")
-    def test_mute_toggle(self, mock_push_notification, mock_run_shell_command):
-        _mute_toggle(self.settings)
-        mock_run_shell_command.assert_called_once_with("echo 'Mute'")
+    def test_mute_toggle(self, mock_push_notification, mock_volume_mute_toggle):
+        _mute_toggle()
+        mock_volume_mute_toggle.assert_called_once_with()
         mock_push_notification.assert_called_once()
 
-    @patch("ebenezer.widgets.volume.run_shell_command")
+    @patch("ebenezer.widgets.volume.volume_cmd.volume_mute_off")
     @patch("ebenezer.widgets.volume.push_notification")
-    def test_unmute(self, mock_push_notification, mock_run_shell_command):
-        _unmute(self.settings, notify=True)
-        mock_run_shell_command.assert_called_once_with("echo 'Mute Off'")
+    def test_unmute(self, mock_push_notification, mock_volume_mute_off):
+        _unmute(notify=True)
+        mock_volume_mute_off.assert_called_once_with()
         mock_push_notification.assert_called_once_with("Volume 󰖁", "Muted")
 
     def test_setup_volume_keys(self):
         keys = setup_volume_keys(self.settings)
-        self.assertEqual(len(keys), 7)
+        self.assertEqual(len(keys), 6)
 
 
 if __name__ == "__main__":

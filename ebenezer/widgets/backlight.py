@@ -3,9 +3,11 @@ from libqtile.config import Key
 from libqtile.lazy import lazy
 
 from ebenezer.config.settings import AppSettings
-from ebenezer.core.command import run_shell_command, run_shell_command_stdout
 from ebenezer.core.notify import push_notification_progress
 from ebenezer.widgets.helpers.args import build_widget_args
+import ebenezer.commands.backlight as backlight_cmd
+
+NOTIFICATION_TITLE = "󰃠 Brightness"
 
 
 def build_backlight_widget(settings: AppSettings, kwargs: dict):
@@ -29,7 +31,7 @@ def build_backlight_widget(settings: AppSettings, kwargs: dict):
         "backlight_name": settings.environment.backlight_name,
         "fmt": " ",
         "padding": 3,
-        "mouse_callbacks": {"Button1": _backlight_level(settings)},
+        "mouse_callbacks": {"Button1": _backlight_level()},
     }
 
     args = build_widget_args(settings, default_args, kwargs)
@@ -37,73 +39,60 @@ def build_backlight_widget(settings: AppSettings, kwargs: dict):
     return widget.Backlight(**args)
 
 
-def _get_backlight_level(settings: AppSettings):
-    cmd = settings.commands.get("backlight_level")
+def _get_backlight_level() -> int:
+    output = backlight_cmd.backlight_level()
 
-    if cmd is None:
-        return "0"
-
-    output = run_shell_command_stdout(cmd)
-
-    return output.stdout.replace("%", "").replace("\n", "")
+    return int(output.stdout.replace("%", "").replace("\n", "") or "0")
 
 
-def _backlight_up(settings: AppSettings):
-    cmd = settings.commands.get("backlight_up")
-
+def _backlight_up():
     @lazy.function
-    def inner(qtile):
-        level = int(_get_backlight_level(settings) or "0")
+    def _inner(_):
+        level = _get_backlight_level()
 
         if level >= 100:
             return
 
-        if cmd:
-            run_shell_command(cmd)
+        backlight_cmd.backlight_up()
+        _push_backlight_notification(NOTIFICATION_TITLE)
 
-        __push_backlight_notification(settings, "󰃠 Brightness")
-
-    return inner
+    return _inner
 
 
-def __backlight_down(settings: AppSettings):
-    cmd = settings.commands.get("backlight_down")
-
+def __backlight_down():
     @lazy.function
-    def inner(qtile):
-        if cmd:
-            run_shell_command(cmd)
+    def _inner(_):
+        backlight_cmd.backlight_down()
+        _push_backlight_notification(NOTIFICATION_TITLE)
 
-        __push_backlight_notification(settings, "󰃠 Brightness")
-
-    return inner
+    return _inner
 
 
-def _backlight_level(settings: AppSettings):
+def _backlight_level():
     @lazy.function
-    def inner(qtile):
-        __push_backlight_notification(settings, "󰃠 Brightness")
+    def _inner(_):
+        _push_backlight_notification(NOTIFICATION_TITLE)
 
-    return inner
+    return _inner
 
 
-def __push_backlight_notification(settings: AppSettings, message: str):
-    level = _get_backlight_level(settings) or "0"
+def _push_backlight_notification(message: str):
+    level = _get_backlight_level()
     message = f"{message} {level}%"
-    push_notification_progress(message=message, progress=int(level))
+    push_notification_progress(message=message, progress=level)
 
 
-def setup_backlight_keys(settings: AppSettings):
+def setup_backlight_keys():
     """
     Sets up key bindings for adjusting the backlight brightness.
 
     Args:
-        settings (AppSettings): The application settings object containing configuration.
+        settings (): The application settings object containing configuration.
 
     Returns:
         list: A list of Key objects for increasing and decreasing the backlight brightness.
     """
     return [
-        Key([], "XF86MonBrightnessUp", _backlight_up(settings)),
-        Key([], "XF86MonBrightnessDown", __backlight_down(settings)),
+        Key([], "XF86MonBrightnessUp", _backlight_up()),
+        Key([], "XF86MonBrightnessDown", __backlight_down()),
     ]

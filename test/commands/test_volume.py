@@ -68,6 +68,16 @@ class TestVolumeCommands(unittest.TestCase):
         )
         mock_click_echo.assert_called_once_with("Mute toggled")
 
+    @patch("ebenezer.commands.volume.run_command")
+    @patch("ebenezer.commands.volume.click.echo")
+    def test_mute_mic(self, mock_click_echo, mock_run_command):
+        result = self.runner.invoke(cli, ["mute-mic"])
+
+        mock_run_command.assert_called_once_with(
+            "pactl set-source-mute @DEFAULT_SOURCE@ toggle"
+        )
+        mock_click_echo.assert_called_once_with("Microphone mute toggled")
+
 
 if __name__ == "__main__":
     unittest.main()

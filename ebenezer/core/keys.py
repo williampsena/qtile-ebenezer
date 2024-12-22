@@ -225,7 +225,7 @@ def build_keys(settings: AppSettings):
     Returns:
         List[Any]: The list of configured key bindings.
     """
-    keys = setup_volume_keys(settings) + setup_backlight_keys(settings)
+    keys = setup_volume_keys(settings) + setup_backlight_keys()
 
     keys = _build_keys_from_config(settings, keys)
 
