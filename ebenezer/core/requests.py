@@ -1,9 +1,10 @@
 import time
 
+import requests
 from libqtile.log_utils import logger
 
 
-def request_retry(operation, retries=5, delay=2):
+def request_retry(operation, retries=5, delay=2) -> requests.Response:
     """
     Retries the given operation a specified number of times with a delay between attempts.
 

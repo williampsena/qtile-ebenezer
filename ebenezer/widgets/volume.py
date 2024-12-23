@@ -57,10 +57,10 @@ def _push_volume_notification(message: str):
 
 def _volume_up():
     @lazy.function
-    def inner(qtile):
+    def _inner(_):
         _do_volume_up()
 
-    return inner
+    return _inner
 
 
 def _do_volume_up():

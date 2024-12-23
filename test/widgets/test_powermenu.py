@@ -18,9 +18,9 @@ class TestBuildPowermenuWidget(unittest.TestCase):
 
     @patch("ebenezer.widgets.powermenu.run_shell_command")
     def test_powermenu_modal(self, mock_run_shell_command):
-        modal = _powermenu_modal(self.settings)
+        modal = _powermenu_modal()
         modal()
-        mock_run_shell_command.assert_called_once_with("echo 'Power Menu'", **{})
+        mock_run_shell_command.assert_called_once_with("ebenezer ui powermenu", **{})
 
     def test_build_powermenu_widget_default(self):
         kwargs = {}

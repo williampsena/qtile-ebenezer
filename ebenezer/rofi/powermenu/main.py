@@ -3,8 +3,6 @@
 import importlib.resources as pkg_resources
 import subprocess
 
-from ebenezer.config.settings import load_settings_by_files
-
 
 def _rofi_command(theme, prompt, message=None):
     command = ["rofi", "-theme", theme, "-dmenu", "-p", prompt]
@@ -56,13 +54,12 @@ def _suspend():
 
 
 def _lock_screen():
-    settings = load_settings_by_files()
     _close_rofi()
-    subprocess.run(settings.lock_screen.command, shell=True)
+    subprocess.Popen(["ebenezer", "ui", "lock"])
 
 
 def _logout():
-    subprocess.run(["qtile", "cmd-obj", "-o", "cmd", "-f", "shutdown"])
+    return subprocess.Popen(["qtile", "cmd-obj", "-o", "cmd", "-f", "shutdown"])
 
 
 def _close_rofi():
@@ -100,8 +97,11 @@ def main():
         .stdout.decode("utf-8")
         .strip()
     )
+
     if chosen in options:
-        options[chosen]()
+        options[chosen.strip()]()
+    else:
+        print("⚠️ Oh no! Invalid choice.")
 
 
 if __name__ == "__main__":

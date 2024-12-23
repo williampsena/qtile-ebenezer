@@ -17,6 +17,7 @@ ttkbootstrap = "*"
 tk = "*"
 "ruamel.yaml" = "*"
 click = "*"
+asyncio = "*"
 
 [dev-packages]
 black = "*"

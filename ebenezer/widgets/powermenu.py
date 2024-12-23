@@ -5,11 +5,11 @@ from ebenezer.core.command import run_shell_command
 from ebenezer.widgets.helpers.args import build_widget_args
 
 
-def _powermenu_modal(settings: AppSettings):
-    def inner():
-        return run_shell_command(settings.commands.get("powermenu"), **{})
+def _powermenu_modal():
+    def _inner():
+        return run_shell_command("ebenezer ui powermenu")
 
-    return inner
+    return _inner
 
 
 def build_powermenu_widget(settings: AppSettings, kwargs: dict):
@@ -35,7 +35,7 @@ def build_powermenu_widget(settings: AppSettings, kwargs: dict):
         "padding": 4,
         "foreground": settings.colors.fg_normal,
         "background": settings.colors.bg_topbar_arrow,
-        "mouse_callbacks": {"Button1": _powermenu_modal(settings)},
+        "mouse_callbacks": {"Button1": _powermenu_modal()},
     }
 
     args = build_widget_args(

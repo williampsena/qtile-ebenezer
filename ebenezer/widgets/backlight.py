@@ -2,10 +2,10 @@ from libqtile import widget
 from libqtile.config import Key
 from libqtile.lazy import lazy
 
+import ebenezer.commands.backlight as backlight_cmd
 from ebenezer.config.settings import AppSettings
 from ebenezer.core.notify import push_notification_progress
 from ebenezer.widgets.helpers.args import build_widget_args
-import ebenezer.commands.backlight as backlight_cmd
 
 NOTIFICATION_TITLE = "󰃠 Brightness"
 
@@ -42,7 +42,7 @@ def build_backlight_widget(settings: AppSettings, kwargs: dict):
 def _get_backlight_level() -> int:
     output = backlight_cmd.backlight_level()
 
-    return int(output.stdout.replace("%", "").replace("\n", "") or "0")
+    return int(output.replace("%", "").replace("\n", "") or "0")
 
 
 def _backlight_up():

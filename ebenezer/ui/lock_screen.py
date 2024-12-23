@@ -1,21 +1,26 @@
+import json
 import random
 import re
 import subprocess
+import time
 from pathlib import Path
 from string import Template
 from typing import Callable, List
 
 import requests
-from libqtile import widget
 from libqtile.log_utils import logger
 from PIL import Image, ImageDraw, ImageFont
 
-from ebenezer.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings, load_settings_by_files
 from ebenezer.core.notify import push_notification_no_history
 from ebenezer.core.requests import request_retry
+from ebenezer.core.theme import preload_colors
 
 OUTPUT_FILE = "/tmp/i3lock.png"
 QUOTE_OUTPUT_FILE = "/tmp/quote.png"
+JOKE_CACHE_FILE = "/tmp/jokes_cache_from"
+NO_JOKES = "No jokes!"
+CACHE_FILE_LIMIT = 8 * 3600  # 8 hours
 
 
 def _is_i3lock_running():
@@ -48,41 +53,82 @@ def _remove_emojis(text):
     return emoji_pattern.sub(r"", text)
 
 
+def _maybe_fetch_cached_response(
+    file: Path, do_request: Callable[[], requests.Response]
+) -> tuple[dict, int]:
+    data: dict = {}
+    status_code = 404
+
+    if (
+        file.exists()
+        and file.stat().st_size > 0
+        and (time.time() - file.stat().st_mtime) < CACHE_FILE_LIMIT
+    ):
+        logger.warning("🔥 uses cache for lock_screen")
+        with open(file, "r") as f:
+            status_code = 200
+            data = json.loads(f.read())
+    else:
+        logger.warning("❄️ uses request for lock_screen")
+        response = request_retry(do_request)
+        status_code = response.status_code
+
+        if status_code == requests.codes.ok:
+            _write_response_cache(file, response.text)
+            data = response.json()
+
+    return data, status_code
+
+
+def _write_response_cache(file: Path, content: str):
+    with open(file, "w") as f:
+        f.write(content)
+        logger.warning(f"the cache was written for {file}")
+
+
 def _get_joke_from_icanhazdadjoke(settings: AppSettings) -> Callable[[], str]:
-    def do_request():
+    file = Path(JOKE_CACHE_FILE + "_icanhazdadjoke.json")
+
+    def _do_request() -> requests.Response:
         headers = {"Accept": "application/json"}
         return requests.get(settings.lock_screen.icanhazdad_joke_url, headers=headers)
 
-    def inner():
-        response = request_retry(do_request)
+    def _inner():
+        data, status_code = _maybe_fetch_cached_response(file, _do_request)
+        joke_content = data.get("joke")
 
-        if response.status_code == requests.codes.ok:
-            return _remove_emojis(response.json()["joke"])
-        else:
-            return "Something went wrong: {}".format(response.status_code)
+        if joke_content is None:
+            raise "Something went wrong: {}".format(status_code)
 
-    return inner
+        return _remove_emojis(joke_content)
+
+    return _inner
 
 
 def _get_joke_from_reddit(settings: AppSettings) -> Callable[[], str]:
-    def do_request():
-        headers = {"Accept": "application/json"}
-        return requests.get(
-            settings.lock_screen.reddit_joke_url, headers=headers
-        ).json()
+    file = Path(JOKE_CACHE_FILE + "_reddit.json")
 
-    def inner():
-        data = request_retry(do_request)
+    def _do_request():
+        headers = {"Accept": "application/json"}
+        return requests.get(settings.lock_screen.reddit_joke_url, headers=headers)
+
+    def _inner():
+        data, status_code = _maybe_fetch_cached_response(file, _do_request)
+
+        if status_code != requests.codes.ok:
+            raise "Something went wrong: {}".format(status_code)
 
         jokes = data.get("data").get("children") or []
         joke = random.choice(jokes)
-        data = joke.get("data")
+        joke_content = joke.get("data")
 
-        punchline = re.sub("&amp;#x200B;", "", _remove_emojis(data.get("selftext")))
+        punchline = re.sub(
+            "&amp;#x200B;", "", _remove_emojis(joke_content.get("selftext"))
+        )
 
-        return f"{_remove_emojis(data.get("title"))}\n{punchline}"
+        return f"{_remove_emojis(joke_content.get("title"))}\n{punchline}"
 
-    return inner
+    return _inner
 
 
 def _load_joke_providers(settings: AppSettings):
@@ -102,15 +148,10 @@ def _get_joke(settings: AppSettings) -> str:
     for joke_provider_key in joke_providers_selected:
         try:
             return joke_providers[joke_provider_key]()
-        except Exception as e:
-            # logger.warning(
-            #     f"error while trying to fetch jokes from {joke_provider_key}",
-            #     e,
-            #     exc_info=True,
-            # )
+        except:
             next
 
-    return "No jokes!"
+    return NO_JOKES
 
 
 def _remove_output_files():
@@ -169,37 +210,55 @@ def _run_command(commands: List[List[str]]):
         command.wait()
 
 
+def _prepare_joke_cache(settings: AppSettings):
+    joke_providers = _load_joke_providers(settings)
+    joke_providers_selected = [
+        key for key in settings.lock_screen.joke_providers if key in joke_providers
+    ]
+
+    for joke_provider_key in joke_providers_selected:
+        try:
+            joke_providers[joke_provider_key]()
+        except Exception as e:
+            logger.exception("Error while trying to prepare jokes caches: %s", e)
+            next
+
+
 def _prepare_lock_screen(settings: AppSettings):
+    start_time = time.time()
+
     _remove_output_files()
 
     _run_command(
         [
-            ["scrot", OUTPUT_FILE],
             [
-                "magick",
-                "convert",
-                "-blur",
-                settings.lock_screen.blurtype,
+                "scrot",
+                "-o",
+                "-e",
+                f"magick convert $f -blur {settings.lock_screen.blurtype} {OUTPUT_FILE}",
                 OUTPUT_FILE,
-                OUTPUT_FILE,
-            ],
+            ]
         ]
     )
 
     _build_background(settings, OUTPUT_FILE)
 
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    logger.warning(f"Time taken to prepare lock the screen: {elapsed_time:.2f} seconds")
 
-def lock_screen(settings: AppSettings):
+
+def _lock_screen_i3(settings: AppSettings):
     if _is_i3lock_running():
         logger.warning("i3lock already running")
         return
 
     push_notification_no_history("󰌾 Locking screen in seconds...", "")
     _prepare_lock_screen(settings)
-    run_i3_lock(settings)
+    _run_i3_lock(settings)
 
 
-def run_i3_lock(settings: AppSettings):
+def _run_i3_lock(settings: AppSettings):
     """
     Executes the i3lock command with the specified settings.
     This function constructs a command to run i3lock with various options
@@ -287,33 +346,18 @@ def run_i3_lock(settings: AppSettings):
     _run_command([cmd_options.split(" ")])
 
 
-def _click_lock_screen(settings: AppSettings):
-    def inner():
-        try:
-            lock_screen(settings)
-        except Exception as e:
-            logger.warning(
-                "error while trying to run lock screen widget", e, exc_info=True
-            )
-
-    return inner
+def _startup(settings: AppSettings):
+    _prepare_joke_cache(settings)
 
 
-def build_lock_screen_widget(settings: AppSettings):
-    """
-    Build a lock screen widget for the Qtile window manager.
+def main(
+    settings: AppSettings | None = None,
+    startup: bool = False,
+):
+    settings = load_settings_by_files()
+    settings = preload_colors(settings, complete=False)
 
-    Args:
-        settings (AppSettings): The application settings containing fonts and colors.
-
-    Returns:
-        widget.TextBox: A TextBox widget configured for the lock screen.
-    """
-    return widget.TextBox(
-        " ",
-        font=settings.fonts.font_icon,
-        fontsize=settings.fonts.font_icon_size,
-        padding=2,
-        foreground=settings.colors.fg_normal,
-        mouse_callbacks={"Button1": _click_lock_screen(settings)},
-    )
+    if startup:
+        return _startup(settings)
+    else:
+        return _lock_screen_i3(settings)

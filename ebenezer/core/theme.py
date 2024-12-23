@@ -119,23 +119,22 @@ def maybe_preload_colors(settings: AppSettings) -> AppSettings:
     return preload_colors(settings)
 
 
-def preload_colors(settings: AppSettings) -> AppSettings:
+def preload_colors(settings: AppSettings, complete=False) -> AppSettings:
     """
     Preloads colors and applies theme settings.
 
     Args:
         settings (AppSettings): The application settings containing theme configurations.
+        complete (bool): If True, applies the complete theme settings (dunst, rofi, etc.).
 
     Returns:
         AppSettings: The updated application settings with applied theme.
     """
-    theme = settings.colors.theme
+    settings = apply_theme_color(settings)
 
-    if theme:
-        settings = _apply_theme_color(theme, settings)
-
-    _apply_rofi_style(settings)
-    _apply_dusnt_style(settings)
+    if complete:
+        _apply_rofi_style(settings)
+        _apply_dusnt_style(settings)
 
     return settings
 
