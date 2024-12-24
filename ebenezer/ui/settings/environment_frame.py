@@ -118,11 +118,6 @@ class EnvironmentFrame(ttk.Frame):
                 "github_notifications_token",
                 env.github_notifications_token,
             ),
-            self._build_form_field_text(
-                "  Rofi Templates Path",
-                "github_notifications_token",
-                env.rofi_home,
-            ),
             self._build_form_field_text("  Scripts Path", "scripts", env.scripts),
         ]
 

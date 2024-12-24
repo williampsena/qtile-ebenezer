@@ -67,21 +67,8 @@ from ebenezer.core.dict import merge_dicts_recursive
 from ebenezer.core.files import resolve_file_path
 from ebenezer.core.yaml import read_yaml_file
 
-ROFI_TEMPLATES = [["_vars.template.rasi", "$home/.config/rofi/_qtile_theme.rasi"]]
+ROFI_TEMPLATES = [["$home/.config/rofi/_qtile_theme.rasi"]]
 DUNSTRC_HOME_PATH = "$home/.config/dunst"
-
-
-def _rofi_home(settings: AppSettings):
-    """
-    Returns the rofi home directory from the given settings.
-
-    Args:
-        settings (AppSettings): An instance of AppSettings containing environment configurations.
-
-    Returns:
-        str: The rofi home directory path. If not set in the environment, returns the default value "$rofi_home".
-    """
-    return resolve_file_path(settings.environment.rofi_home or "$rofi_home")
 
 
 def _theme_file_exists(settings: AppSettings) -> bool:
@@ -97,7 +84,7 @@ def _theme_file_exists(settings: AppSettings) -> bool:
         bool: True if any of the theme files exist, False otherwise.
     """
     for template_file, _ in ROFI_TEMPLATES:
-        if Path(f"{_rofi_home(settings)}/{template_file}").exists:
+        if Path(template_file).exists:
             return True
 
     return False
@@ -212,7 +199,7 @@ def _apply_rofi_style(settings: AppSettings):
         }
 
         for template_file, target_file in ROFI_TEMPLATES:
-            with open(f"{_rofi_home(settings)}/{template_file}", "r") as f:
+            with open(template_file, "r") as f:
                 cmd_template = Template(f.read())
                 content = cmd_template.safe_substitute(colors).strip()
 

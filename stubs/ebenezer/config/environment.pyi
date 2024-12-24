@@ -14,6 +14,5 @@ class AppSettingsEnvironment:
     weather_api_key: str
     city_id: str
     github_notifications_token: str
-    rofi_home: str
     scripts: str
     def __init__(self, **kwargs: object) -> None: ...

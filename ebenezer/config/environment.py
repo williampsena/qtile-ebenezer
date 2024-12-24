@@ -28,7 +28,6 @@ class AppSettingsEnvironment:
     weather_api_key: str = ""
     city_id: str = ""
     github_notifications_token: str = ""
-    rofi_home: str = ""
     scripts: str = ""
 
     def __init__(self, **kwargs: object):
@@ -59,5 +58,4 @@ class AppSettingsEnvironment:
         self.github_notifications_token = str(
             kwargs.get("github_notifications_token", self.github_notifications_token)
         )
-        self.rofi_home = str(kwargs.get("rofi_home", self.rofi_home))
         self.scripts = str(kwargs.get("scripts", self.scripts))
