@@ -7,7 +7,8 @@ YES_LABEL = "󰩐"
 NO_LABEL = ""
 
 
-def confirm_cmd(title, question, theme):
+def confirm_cmd(title, question) -> str:
+    theme = pkg_resources.files("ebenezer.rofi.modals").joinpath("confirm.rasi")
     command = [
         "rofi",
         "-dmenu",
@@ -28,8 +29,7 @@ def confirm_cmd(title, question, theme):
 
 
 def main(title: str = "Confirmations", question: str = "Are you sure?"):
-    theme_file = pkg_resources.files("ebenezer.rofi.modals").joinpath("confirm.rasi")
-    choice = confirm_cmd(title, question, theme_file)
+    choice = confirm_cmd(title, question)
 
     if choice == YES_LABEL:
         print("yes")

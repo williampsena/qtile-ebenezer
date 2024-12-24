@@ -1,8 +1,10 @@
 from _typeshed import Incomplete
-from ebenezer.config.settings import AppSettings as AppSettings
-from ebenezer.core.command import build_shell_command as build_shell_command, run_shell_command as run_shell_command
-from ebenezer.widgets.helpers.args import build_widget_args as build_widget_args
 from libqtile.widget import base
+
+from ebenezer.config.settings import AppSettings as AppSettings
+from ebenezer.core.command import build_shell_command as build_shell_command
+from ebenezer.core.command import run_shell_command as run_shell_command
+from ebenezer.widgets.helpers.args import build_widget_args as build_widget_args
 
 class DunstWidget(base.ThreadPoolText):
     defaults: Incomplete

@@ -3,6 +3,8 @@
 import importlib.resources as pkg_resources
 import subprocess
 
+from ebenezer.rofi.modals.confirm import confirm_cmd
+
 
 def _rofi_command(theme, prompt, message=None):
     command = ["rofi", "-theme", theme, "-dmenu", "-p", prompt]
@@ -12,25 +14,7 @@ def _rofi_command(theme, prompt, message=None):
 
 
 def _confirm_cmd():
-    confirm_theme = pkg_resources.files("ebenezer.rofi.modals").joinpath("confirm.rasi")
-    command = _rofi_command(str(confirm_theme), "Confirmation", "Are you sure?")
-    command.extend(
-        [
-            "-theme-str",
-            "window {location: center; anchor: center; fullscreen: false; width: 350px;}",
-            "-theme-str",
-            'mainbox {orientation: vertical; children: [ "message", "listview" ];}',
-            "-theme-str",
-            "listview {columns: 2; lines: 1;}",
-            "-theme-str",
-            "element-text {horizontal-align: 0.5;}",
-            "-theme-str",
-            "textbox {horizontal-align: 0.5;}",
-        ]
-    )
-    return (
-        subprocess.run(command, stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
-    )
+    return confirm_cmd("Confirmation", "Are you sure?")
 
 
 def _confirm_exit():

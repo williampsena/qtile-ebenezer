@@ -3,26 +3,19 @@ import subprocess
 from libqtile.widget import base
 
 from ebenezer.config.settings import AppSettings
-from ebenezer.core.command import build_shell_command, run_shell_command
+from ebenezer.core.command import run_shell_command
+from ebenezer.rofi.modals.confirm import confirm_cmd
 from ebenezer.widgets.helpers.args import build_widget_args
 
 
-def _notifications_actions(cmd: str):
-    if cmd is None:
-        return
-
-    result = subprocess.run(
-        [
-            build_shell_command(
-                cmd, title="Confirm", question="Would you like to clear notifications?"
-            )
-        ],
-        shell=True,
-        capture_output=True,
-        text=True,
+def _notifications_actions():
+    result = confirm_cmd(
+        "Confirm",
+        "Would you like to clear notifications?",
     )
 
-    choice = result.stdout.strip()
+    choice = result.strip()
+    print(str(choice))
 
     if choice == "yes":
         run_shell_command("dunstctl history-clear")
@@ -37,7 +30,6 @@ class DunstWidget(base.ThreadPoolText):
     Attributes:
         defaults (list): Default configuration options for the widget.
         count (int): The current count of notifications.
-        modal_confirm_cmd (str): Command to confirm modal actions.
         animated (bool): Whether the bell icon should be animated.
         bells_index (int): Index to track the current bell icon.
         bells (list): List of bell icons.
@@ -62,7 +54,6 @@ class DunstWidget(base.ThreadPoolText):
         settings = config.pop("settings")
 
         self.count = 0
-        self.modal_confirm_cmd = settings.commands.get("modal_confirm")
         self.animated = config.get("animated", False)
         self.bells_index = 0
         self.bells = ["󰂚", "󰂞"]
@@ -118,7 +109,7 @@ class DunstWidget(base.ThreadPoolText):
         if self.count == 0:
             return
 
-        _notifications_actions(self.modal_confirm_cmd)
+        _notifications_actions()
 
 
 def build_notification_widget(settings: AppSettings, kwargs: dict):

@@ -31,13 +31,15 @@ class TestDunstWidget(unittest.TestCase):
         mock_popen.assert_called_once_with(["dunstctl", "history-pop"])
 
     @patch("ebenezer.widgets.notification.subprocess.run")
-    def test_clear_notifications(self, mock_run):
-        def side_effect_run(cmd, *args, **kwargs):
-            if cmd == ["echo 'Confirm'"]:
-                return MagicMock(stdout="yes")
+    @patch("ebenezer.widgets.notification.confirm_cmd")
+    def test_clear_notifications(self, mock_confirm_cmd, mock_run):
+        def side_effect_confirm(cmd, *args, **kwargs):
+            return "yes"
 
+        def side_effect_run(cmd, *args, **kwargs):
             return MagicMock(stdout="")
 
+        mock_confirm_cmd.side_effect = side_effect_confirm
         mock_run.side_effect = side_effect_run
 
         widget = DunstWidget(settings=self.settings)
