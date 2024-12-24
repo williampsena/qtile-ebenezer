@@ -1,15 +1,13 @@
 from _typeshed import Incomplete
-from libqtile.widget import base
-
 from ebenezer.config.settings import AppSettings as AppSettings
-from ebenezer.core.command import build_shell_command as build_shell_command
 from ebenezer.core.command import run_shell_command as run_shell_command
+from ebenezer.rofi.modals.confirm import confirm_cmd as confirm_cmd
 from ebenezer.widgets.helpers.args import build_widget_args as build_widget_args
+from libqtile.widget import base
 
 class DunstWidget(base.ThreadPoolText):
     defaults: Incomplete
     count: int
-    modal_confirm_cmd: Incomplete
     animated: Incomplete
     bells_index: int
     bells: Incomplete
