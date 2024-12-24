@@ -46,11 +46,3 @@ def update_yaml_property(filepath: str, property_path: str, value) -> None:
         d = d.setdefault(key, CommentedMap())
     d[keys[-1]] = value
     write_yaml_file(filepath, data)
-
-
-# Example usage
-if __name__ == "__main__":
-    config_file = "config.test.yml"  # Update this path to your actual config.yml file
-    update_yaml_property(
-        config_file, "environment.wallpaper_dir", "/new/path/to/wallpapers"
-    )
