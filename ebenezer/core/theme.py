@@ -23,6 +23,7 @@ Functions:
 
 from pathlib import Path
 from string import Template
+from typing import NamedTuple
 
 from libqtile.log_utils import logger
 
@@ -31,79 +32,21 @@ from ebenezer.core.dict import merge_dicts_recursive
 from ebenezer.core.files import resolve_file_path
 from ebenezer.core.yaml import read_yaml_file
 
-ROFI_TEMPLATES = [["_vars.template.rasi", "$home/.config/rofi/_qtile_theme.rasi"]]
+
+class RofiTemplate(NamedTuple):
+    template: str
+    target: int
+
+
+ROFI_TEMPLATES: list[RofiTemplate] = [
+    RofiTemplate(
+        template="$rofi_home/_vars.template.rasi",
+        target="$home/.config/rofi/_qtile_theme.rasi",
+    )
+]
 DUNSTRC_HOME_PATH = "$home/.config/dunst"
 
-"""
-theme.py
---------
-
-This module provides functions to apply themes and styles for Qtile.
-
-Functions:
-    preload_colors(settings: AppSettings) -> AppSettings:
-        Preloads colors and applies theme settings.
-
-    _apply_theme_color(theme_filepath: str, settings: AppSettings) -> AppSettings:
-        Applies theme colors from a YAML file.
-
-    _apply_rofi_style(settings: AppSettings):
-        Applies the Rofi style based on the provided settings.
-
-    _extract_rasi_colors(colors: AppSettingsColors) -> str:
-        Extracts Rasi colors from the settings.
-
-    _apply_dusnt_style(settings: AppSettings):
-        Applies the Dunst style based on the provided settings.
-"""
-
-from pathlib import Path
-from string import Template
-
-from libqtile.log_utils import logger
-
-from ebenezer.config.settings import AppSettings, AppSettingsColors
-from ebenezer.core.dict import merge_dicts_recursive
-from ebenezer.core.files import resolve_file_path
-from ebenezer.core.yaml import read_yaml_file
-
-ROFI_TEMPLATES = [["$home/.config/rofi/_qtile_theme.rasi"]]
 DUNSTRC_HOME_PATH = "$home/.config/dunst"
-
-
-def _theme_file_exists(settings: AppSettings) -> bool:
-    """
-    Checks if any of the theme files specified in ROFI_TEMPLATES exist in the
-    directory specified by the settings.
-
-    Args:
-        settings (AppSettings): The application settings containing the directory
-                                information.
-
-    Returns:
-        bool: True if any of the theme files exist, False otherwise.
-    """
-    for template_file, _ in ROFI_TEMPLATES:
-        if Path(template_file).exists:
-            return True
-
-    return False
-
-
-def maybe_preload_colors(settings: AppSettings) -> AppSettings:
-    """
-    Preloads colors and applies theme settings if theme file does not exists
-
-    Args:
-        settings (AppSettings): The application settings containing theme configurations.
-
-    Returns:
-        AppSettings: The updated application settings with applied theme.
-    """
-    if _theme_file_exists(settings):
-        return settings
-
-    return preload_colors(settings)
 
 
 def preload_colors(settings: AppSettings, complete=False) -> AppSettings:
@@ -198,12 +141,15 @@ def _apply_rofi_style(settings: AppSettings):
             "colors": _extract_rasi_colors(settings.colors),
         }
 
-        for template_file, target_file in ROFI_TEMPLATES:
+        for template in ROFI_TEMPLATES:
+            template_file = resolve_file_path(template.template)
+            target_file = resolve_file_path(template.target)
+
             with open(template_file, "r") as f:
                 cmd_template = Template(f.read())
                 content = cmd_template.safe_substitute(colors).strip()
 
-                with open(resolve_file_path(target_file), "w") as f:
+                with open(target_file, "w") as f:
                     f.write(content)
     except Exception as e:
         logger.warning("error while trying to build rofi style", e, exc_info=True)

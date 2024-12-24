@@ -1,4 +1,5 @@
 from _typeshed import Incomplete
+
 from ebenezer.config.keybindings import AppSettingsKeyBinding as AppSettingsKeyBinding
 from ebenezer.config.settings import AppSettings as AppSettings
 from ebenezer.core.command import lazy_spawn as lazy_spawn
