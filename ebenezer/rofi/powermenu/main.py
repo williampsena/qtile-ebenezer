@@ -13,13 +13,12 @@ def _rofi_command(theme, prompt, message=None):
     return command
 
 
-def _confirm_cmd():
+def _confirm_cmd() -> bool:
     return confirm_cmd("Confirmation", "Are you sure?")
 
 
-def _confirm_exit():
-    yes = "󰩐"
-    return _confirm_cmd().strip() == yes
+def _confirm_exit() -> bool:
+    return _confirm_cmd()
 
 
 def _shutdown():

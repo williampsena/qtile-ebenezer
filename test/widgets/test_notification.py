@@ -34,7 +34,7 @@ class TestDunstWidget(unittest.TestCase):
     @patch("ebenezer.widgets.notification.confirm_cmd")
     def test_clear_notifications(self, mock_confirm_cmd, mock_run):
         def side_effect_confirm(cmd, *args, **kwargs):
-            return "yes"
+            return True
 
         def side_effect_run(cmd, *args, **kwargs):
             return MagicMock(stdout="")

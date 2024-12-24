@@ -9,15 +9,12 @@ from ebenezer.widgets.helpers.args import build_widget_args
 
 
 def _notifications_actions():
-    result = confirm_cmd(
+    confirmed = confirm_cmd(
         "Confirm",
         "Would you like to clear notifications?",
     )
 
-    choice = result.strip()
-    print(str(choice))
-
-    if choice == "yes":
+    if confirmed:
         run_shell_command("dunstctl history-clear")
     else:
         run_shell_command("dunstctl close-all")
