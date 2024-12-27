@@ -65,9 +65,16 @@ ebenezer volume --help
 ebenezer wallpaper --help
 ```
 
-
 # Documentation
 
 You may access library documentation generated with Sphinx [here](https://qtile-ebenezer.readthedocs.io/en/latest/).
 
 Thank you for the Read The Docs open source support. ❤️
+
+# Inspirations ✨
+
+- [JhoalfercoQtileDotfiles](https://github.com/JhonatanFerrer/JhoalfercoQtileDotfiles) by Jhonatan Ferrer
+- [dotfiles](https://gitlab.com/dwt1/dotfiles) by DistroTube
+- [shinrai-dotfiles](https://github.com/neo-fetch/shinrai-dotfiles) by neo-fetch
+- [rofi](https://github.com/adi1090x/rofi?tab=readme-ov-file) by adi1090x
+- [rofi-presets](https://github.com/SapuSeven/rofi-presets) by SapuSeven
