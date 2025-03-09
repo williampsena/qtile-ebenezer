@@ -41,6 +41,7 @@ class GitHubNotifications(base.ThreadPoolText):
 
         self.settings = config.pop("settings")
         self.icon = config.pop("icon_widget")
+        self.icon.base_text = self.icon.text or ""
         self.token = config.get(
             "token", self.settings.environment.github_notifications_token
         )
@@ -71,8 +72,10 @@ class GitHubNotifications(base.ThreadPoolText):
 
                 if count == 0:
                     self.icon.foreground = self.icon.foreground_normal
+                    self.icon.text = ""
                     return ""
                 else:
+                    self.icon.text = self.icon.base_text
                     self.icon.foreground = self.icon.foreground_alert
                     return f"{count}+"
             else:

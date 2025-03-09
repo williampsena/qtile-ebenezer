@@ -1,5 +1,3 @@
-from typing import Any, List
-
 """
 This module provides functions to build a customized bar for the Qtile window manager
 using various widgets defined in the ebenezer package.
@@ -30,6 +28,8 @@ Constants:
     WIDGETS (dict): A dictionary mapping widget types to their respective builder functions.
 """
 
+from typing import Any, Callable, List
+
 from libqtile import bar, widget
 from libqtile.log_utils import logger
 
@@ -47,6 +47,7 @@ from ebenezer.widgets.layout import build_current_layout_widget
 from ebenezer.widgets.memory import build_memory_widget
 from ebenezer.widgets.notification import build_notification_widget
 from ebenezer.widgets.powermenu import build_powermenu_widget
+from ebenezer.widgets.settings import build_settings_widget
 from ebenezer.widgets.spacer import build_spacer_widget
 from ebenezer.widgets.task_list import build_task_list_widget
 from ebenezer.widgets.thermal import build_thermal_widget
@@ -55,9 +56,24 @@ from ebenezer.widgets.wallpaper import build_wallpaper_widget
 from ebenezer.widgets.weather import build_weather_widget
 from ebenezer.widgets.window_name import build_window_name_widget
 
+CustomWidgets = dict[str, Callable[[AppSettings, dict], any]]
 
-def build_bar(settings: AppSettings):
-    widgets = _build_widgets(settings)
+
+def build_bar(
+    settings: AppSettings,
+    custom_widgets: CustomWidgets = {},
+):
+    """
+    Build and return a bar with the specified settings and custom widgets.
+
+    Args:
+        settings (AppSettings): The application settings containing bar configuration.
+        custom_widgets (CustomWidgets, optional): A dictionary of custom widgets to include in the bar. Defaults to an empty dictionary.
+
+    Returns:
+        bar.Bar: The configured bar instance.
+    """
+    widgets = _build_widgets(settings, custom_widgets)
 
     return bar.Bar(
         widgets,
@@ -116,6 +132,7 @@ WIDGETS = {
     "notification": build_notification_widget,
     "powermenu": build_powermenu_widget,
     "separator": _build_separator,
+    "settings": build_settings_widget,
     "spacer": build_spacer_widget,
     "prompt": _build_prompt,
     "task_list": _build_task_list_widget,
@@ -127,8 +144,13 @@ WIDGETS = {
 }
 
 
-def _build_widget(settings: AppSettings, widget_type: str, args: dict):
-    builder = WIDGETS.get(widget_type)
+def _build_widget(
+    settings: AppSettings,
+    widget_type: str,
+    args: dict,
+    custom_widgets: CustomWidgets = {},
+):
+    builder = WIDGETS.get(widget_type) or custom_widgets.get(widget_type)
 
     if builder is None:
         return None
@@ -136,15 +158,20 @@ def _build_widget(settings: AppSettings, widget_type: str, args: dict):
     return builder(settings, args)
 
 
-def _build_widgets(settings: AppSettings):
+def _build_widgets(
+    settings: AppSettings,
+    custom_widgets: CustomWidgets,
+):
     try:
         widgets: List[Any] = []
 
         for config in settings.bar.widgets:
-            next_widgets = _build_widget(settings, config.type, config.args)
+            next_widgets = _build_widget(
+                settings, config.type, config.args, custom_widgets=custom_widgets
+            )
 
             if next_widgets is None:
-                logger.warn(
+                logger.warning(
                     f"Widget {config.type} could not be found: {config.__dict__}"
                 )
                 continue
