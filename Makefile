@@ -59,7 +59,7 @@ docs-locally:
 deploy:
 	$(MAKE) stubgen
 	rm -rf dist/*
-	$(PIPENV) run bump2version patch
+	$(PIPENV) run bump2version --allow-dirty patch
 	$(PIPENV) run python setup.py sdist bdist_wheel
 	$(PIPENV) run twine upload dist/*
 
@@ -93,7 +93,7 @@ local-install:
 	$(MAKE) aur-clean
 	python -m build --wheel --outdir "qtile-ebenezer/dist"
 	python -m installer --destdir="$(PWD)/qtile-ebenezer" qtile-ebenezer/dist/*.whl
-	sudo cp -R qtile-ebenezer/usr/lib/python3.12/site-packages/ebenezer /usr/lib/python3.12/site-packages
+	sudo cp -R qtile-ebenezer/usr/lib/python3.13/site-packages/ebenezer /usr/lib/python3.13/site-packages
 	sudo cp qtile-ebenezer/usr/bin/ebenezer /usr/bin/ebenezer
 
 aur-setup:
