@@ -20,6 +20,13 @@ groups:
   files: 󰉋
   win: 󰍲    
 
+layouts:
+  monadtall: {}
+  max: {}
+  tile:
+    ratio: 1
+  floating: {}
+
 groups_layout:
   default: monadtall
   win: tile

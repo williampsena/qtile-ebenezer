@@ -10,13 +10,24 @@ def get_layout_icon(layout_name):
 
 
 ICONS = {
-    "monadtall": "󰕴",
-    "monadwide": "󰜩",
-    "max": "",
-    "stack": "充",
+    "bsp": "",
     "columns": "",
     "floating": "",
+    "max": "",
+    "matrix": "󰘨",
+    "monadtall": "󰕴",
+    "monadthreecol": "",
+    "monadwide": "󰜩",
+    "plasma": "",
+    "ratiotile": "",
+    "screensplit": "",
+    "slice": "",
+    "spiral": "",
+    "stack": "",
     "tile": "",
+    "treetab": "",
+    "verticaltile": "",
+    "zoomy": "",
 }
 
 

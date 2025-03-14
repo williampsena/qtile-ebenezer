@@ -59,6 +59,7 @@ class AppSettings:
     fonts = AppSettingsFonts(**{})
     groups: list[Any] = []
     groups_layout: dict[str, str] = {"default": "monadtall"}
+    layouts: dict[str, dict] = {}
     keybindings: List[AppSettingsKeyBinding] = []
     lock_screen = AppSettingsLockScreen(**{})
     monitoring: AppSettingsMonitoring = AppSettingsMonitoring(*{})
@@ -80,6 +81,7 @@ class AppSettings:
         self.fonts = kwargs.get("fonts", self.fonts)
         self.groups = kwargs.get("groups", self.groups)
         self.groups_layout = kwargs.get("groups_layout", self.groups_layout)
+        self.layouts = kwargs.get("layouts", self.layouts)
         self.keybindings = kwargs.get("keybindings", self.keybindings)
         self.lock_screen = kwargs.get("lock_screen", self.lock_screen)
         self.monitoring = kwargs.get("monitoring", self.monitoring)
@@ -130,7 +132,7 @@ def load_settings(raw_settings: dict) -> AppSettings:
     Returns:
         AppSettings: The loaded application settings.
     """
-    raw_keys = ["commands", "floating", "groups", "groups_layout", "startup"]
+    raw_keys = ["commands", "floating", "groups", "groups_layout", "layouts", "startup"]
     args = {k: v for k, v in raw_settings.items() if k in raw_keys}
 
     bar = raw_settings.get("bar")

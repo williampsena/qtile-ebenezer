@@ -44,6 +44,7 @@ def test_parse_settings():
             "files": "󰉋",
             "win": "󰍲",
         },
+        layouts={"monadtall": {}, "max": {}, "tile": {"ratio": 1}, "floating": {}},
         groups_layout={"default": "monadtall", "win": "tile"},
         startup={
             "keyboard_layout": "setxkbmap -model abnt2 -layout br && localectl set-x11-keymap br",
@@ -129,6 +130,7 @@ def test_parse_settings():
     assert settings.fonts.__dict__ == expected.fonts.__dict__
     assert settings.groups == expected.groups
     assert settings.groups_layout == expected.groups_layout
+    assert settings.layouts == expected.layouts
     assert settings.startup == expected.startup
     assert settings.floating == expected.floating
     assert settings.colors.__dict__ == expected.colors.__dict__

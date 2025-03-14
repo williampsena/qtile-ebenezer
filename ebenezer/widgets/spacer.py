@@ -1,9 +1,10 @@
 from libqtile import bar, widget
 
 from ebenezer.config.settings import AppSettings
+from ebenezer.widgets.helpers.args import build_widget_args
 
 
-def build_spacer_widget(_: AppSettings, kwargs: dict):
+def build_spacer_widget(settings: AppSettings, kwargs: dict):
     """
     Build a spacer widget with specified settings.
 
@@ -35,5 +36,6 @@ def build_spacer_widget(_: AppSettings, kwargs: dict):
         length = 1
 
     args["length"] = length
+    args = build_widget_args(settings, default_args, args)
 
     return widget.Spacer(**args)
