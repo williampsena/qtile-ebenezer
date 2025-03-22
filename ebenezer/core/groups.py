@@ -41,7 +41,7 @@ def build_groups(keys: List, settings: AppSettings):
             )
         )
 
-    groups: list[Any] = []
+    groups: list[any] = []
 
     for i, g in enumerate(settings.groups):
         key = g
@@ -63,7 +63,8 @@ def build_groups(keys: List, settings: AppSettings):
                 Key(
                     [mod],
                     g.name,
-                    lazy.group[g.name].toscreen(),
+                    lazy.group[g.name].toscreen(0),
+                    lazy.group["1" + g.name].toscreen(1),
                     desc="Switch to group {}".format(g.name),
                 ),
                 # mod1 + shift + letter of group = move focused window to group

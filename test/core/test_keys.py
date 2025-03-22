@@ -4,7 +4,7 @@ from libqtile.config import Key
 
 from ebenezer.config.keybindings import AppSettingsKeyBinding
 from ebenezer.config.settings import AppSettings
-from ebenezer.core.keys import _build_key_spawn
+from ebenezer.core.keys import _build_key_spawn, fetch_keybindings_text
 
 
 class TestBuildKeySpawn(unittest.TestCase):
@@ -24,6 +24,28 @@ class TestBuildKeySpawn(unittest.TestCase):
         self.assertEqual(key.key, "Return")
 
         self.assertEqual(key.commands[0].args[0], "xterm")
+
+    def test_fetch_keybindings_text(self):
+        settings = AppSettings()
+        settings.environment.modkey = "mod4"
+
+        settings.keybindings = [
+            AppSettingsKeyBinding(
+                name="test", keys="mod4 Return", action="spawn", command="xterm"
+            )
+        ]
+
+        text = fetch_keybindings_text(settings)
+
+        self.assertIn(
+            "mod4 + \U000f0311 enter",
+            text,
+        )
+
+        self.assertIn(
+            "test",
+            text,
+        )
 
 
 if __name__ == "__main__":

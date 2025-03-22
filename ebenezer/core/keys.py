@@ -18,17 +18,57 @@ Functions:
         Builds key bindings from the configuration and appends them to the provided keys list.
 """
 
+import io
 import os
-from typing import Any, List
+import shutil
+from collections import defaultdict
+from typing import Any, Dict, List, NamedTuple
 
+from colorama import Back, Fore, Style, init
 from libqtile.config import Key
 from libqtile.lazy import lazy
 
 from ebenezer.config.keybindings import AppSettingsKeyBinding
-from ebenezer.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings, load_settings_by_files
 from ebenezer.core.command import lazy_spawn
 from ebenezer.widgets.backlight import setup_backlight_keys
 from ebenezer.widgets.volume import setup_volume_keys
+
+
+class ColorKeybindingGroup(NamedTuple):
+    name: str
+    foreground_ansi: str = ""
+    background_ansi: str = ""
+    foreground: str = ""
+    background: str = ""
+
+
+COLOR_KEYBINDING_GROUPS = {
+    "apps": ColorKeybindingGroup(
+        "󰀻  apps", Fore.GREEN, Back.BLACK, "#00FF00", "#000000"
+    ),
+    "window": ColorKeybindingGroup(
+        "  window", Fore.CYAN, Back.BLACK, "#00FFFF", "#000000"
+    ),
+    "custom": ColorKeybindingGroup(
+        "󱡄 custom", Fore.WHITE, Back.MAGENTA, "#FFFFFF", "#FF00FF"
+    ),
+    "laucher": ColorKeybindingGroup(
+        "󱓞 laucher", Fore.RED, Back.BLACK, "#FF0000", "#000000"
+    ),
+    "qtile": ColorKeybindingGroup(
+        "  qtile", Fore.BLUE, Back.BLACK, "#0000FF", "#000000"
+    ),
+    "screen": ColorKeybindingGroup(
+        "󰍹  screen", Fore.WHITE, Back.BLACK, "#FFFFFF", "#000000"
+    ),
+    "screenshot": ColorKeybindingGroup(
+        "  screenshot", Fore.YELLOW, Back.BLACK, "#FFFF00", "#000000"
+    ),
+    "settings": ColorKeybindingGroup(
+        "  settings", Fore.BLACK, Back.GREEN, "#000000", "#00FF00"
+    ),
+}
 
 
 def _build_key_spawn(settings: AppSettings, binding: AppSettingsKeyBinding):
@@ -185,33 +225,66 @@ def _build_key_reset_windows(settings: AppSettings, binding: AppSettingsKeyBindi
     )
 
 
+def _build_key_toggle_group(settings: AppSettings, binding: AppSettingsKeyBinding):
+    return _build_key(
+        _format_keybinding(settings, binding.keys), lazy.group.toggle_groups()
+    )
+
+
+def _build_key_focus_group(settings: AppSettings, binding: AppSettingsKeyBinding):
+    return _build_key(_format_keybinding(settings, binding.keys), _focus_group())
+
+
+def _build_key_next_screen(settings: AppSettings, binding: AppSettingsKeyBinding):
+    return _build_key(_format_keybinding(settings, binding.keys), lazy.next_screen())
+
+
+def _build_key_previous_screen(settings: AppSettings, binding: AppSettingsKeyBinding):
+    return _build_key(
+        _format_keybinding(settings, binding.keys), lazy.previous_screen()
+    )
+
+
+def _build_key_first_screen(settings: AppSettings, binding: AppSettingsKeyBinding):
+    return _build_key(_format_keybinding(settings, binding.keys), lazy.to_screen(0))
+
+
+def _build_key_second_screen(settings: AppSettings, binding: AppSettingsKeyBinding):
+    return _build_key(_format_keybinding(settings, binding.keys), lazy.to_screen(1))
+
+
 ACTIONS = {
-    "cmd": _build_key_spawn_cmd,
-    "spawn": _build_key_spawn,
-    "spawn_command": _build_key_spawn_command,
-    "terminal": _build_key_spawn_terminal,
     "browser": _build_key_spawn_browser,
-    "lock_screen": _build_key_lock_screen,
-    "next_layout": _build_key_next_layout,
-    "kill_window": _build_key_kill_window,
-    "reload_config": _build_key_reload_config,
-    "shutdown": _build_key_shutdown,
+    "cmd": _build_key_spawn_cmd,
+    "floating": _build_key_floating,
+    "focus_down": _build_key_focus_down,
     "focus_left": _build_key_focus_left,
+    "focus_next": _build_key_focus_next,
     "focus_right": _build_key_focus_right,
     "focus_up": _build_key_focus_up,
-    "focus_down": _build_key_focus_down,
-    "focus_next": _build_key_focus_next,
     "fullscreen": _build_key_fullscreen,
-    "floating": _build_key_floating,
+    "grow_down": _build_key_grow_down,
+    "grow_left": _build_key_grow_left,
+    "grow_right": _build_key_grow_right,
+    "grow_up": _build_key_grow_up,
+    "kill_window": _build_key_kill_window,
+    "lock_screen": _build_key_lock_screen,
+    "next_layout": _build_key_next_layout,
+    "reload_config": _build_key_reload_config,
+    "reset_windows": _build_key_reset_windows,
+    "shuffle_down": _build_key_shuffle_down,
     "shuffle_left": _build_key_shuffle_left,
     "shuffle_right": _build_key_shuffle_right,
     "shuffle_up": _build_key_shuffle_up,
-    "shuffle_down": _build_key_shuffle_down,
-    "grow_left": _build_key_grow_left,
-    "grow_right": _build_key_grow_right,
-    "grow_down": _build_key_grow_down,
-    "grow_up": _build_key_grow_up,
-    "reset_windows": _build_key_reset_windows,
+    "shutdown": _build_key_shutdown,
+    "spawn_command": _build_key_spawn_command,
+    "spawn": _build_key_spawn,
+    "terminal": _build_key_spawn_terminal,
+    "toggle_group": _build_key_toggle_group,
+    "next_screen": _build_key_next_screen,
+    "previous_screen": _build_key_previous_screen,
+    "first_screen": _build_key_first_screen,
+    "second_screen": _build_key_second_screen,
 }
 
 
@@ -286,3 +359,125 @@ def _format_keybinding(settings: AppSettings, keys: List[str]):
         List[str]: The formatted key binding.
     """
     return [k.replace("$mod", settings.environment.modkey) for k in keys]
+
+
+def _format_keybinding_icon(settings: AppSettings, keys: List[str]) -> str:
+    """
+    Formats the key binding by replacing placeholders with actual values.
+
+    Args:
+        keybinding (str): The key binding to be formatted.
+
+    Returns:
+        str: The formatted key binding.
+    """
+
+    keybinding = " + ".join(_format_keybinding(settings, keys))
+
+    return (
+        keybinding.lower()
+        .replace("mod4", "  mod4")
+        .replace("return", "󰌑 enter")
+        .replace("shift", "󰘶 shift")
+        .replace("tab", " tab")
+    )
+
+
+def fetch_keybindings_text(settings: AppSettings | None = None) -> str:
+    settings = settings or load_settings_by_files()
+    init(autoreset=True)
+    print("\033c", end="")
+
+    grouped_keybindings: Dict[str, List[AppSettingsKeyBinding]] = defaultdict(list)
+
+    for binding in settings.keybindings:
+        grouped_keybindings[binding.group].append(binding)
+
+    columns, _ = shutil.get_terminal_size()
+
+    if columns < 100:
+        return _fetch_keybindings_text_single(settings, grouped_keybindings)
+    else:
+        return _fetch_keybindings_text_column(settings, grouped_keybindings)
+
+
+def _fetch_keybindings_text_single(
+    settings: AppSettings, grouped_keybindings: Dict[str, List[AppSettingsKeyBinding]]
+) -> str:
+    buffer = io.StringIO()
+
+    for binding in settings.keybindings:
+        grouped_keybindings[binding.group].append(binding)
+
+    for group, bindings in grouped_keybindings.items():
+        group_settings = COLOR_KEYBINDING_GROUPS.get(
+            group, COLOR_KEYBINDING_GROUPS.get("custom")
+        )
+
+        buffer.write(
+            f"{group_settings.foreground_ansi}{group_settings.background_ansi} {group_settings.name} {Style.RESET_ALL}\n\n"
+        )
+
+        for binding in bindings:
+            keys = _format_keybinding_icon(settings, binding.keys)
+            buffer.write(f"  {Fore.LIGHTBLACK_EX}{keys}  {Fore.WHITE}{binding.name}\n")
+
+        buffer.write("\n")
+
+    return buffer.getvalue()
+
+
+def _fetch_keybindings_text_column(
+    settings: AppSettings, grouped_keybindings: Dict[str, List[AppSettingsKeyBinding]]
+) -> str:
+
+    left_column = []
+    right_column = []
+    max_text_from_left = 0
+
+    for i, (group, bindings) in enumerate(
+        sorted(grouped_keybindings.items(), key=lambda item: len(item[1]), reverse=True)
+    ):
+        group_settings = COLOR_KEYBINDING_GROUPS.get(
+            group, COLOR_KEYBINDING_GROUPS.get("custom")
+        )
+
+        group_header = f"{group_settings.foreground_ansi}{group_settings.background_ansi} {group_settings.name} {Style.RESET_ALL}\n\n"
+
+        if i % 2 == 0:
+            left_column.append(group_header)
+        else:
+            right_column.append(group_header)
+
+        for binding in bindings:
+            keys = _format_keybinding_icon(settings, binding.keys)
+            binding_text = f"  {Fore.LIGHTBLACK_EX}{keys}  {Fore.WHITE}{binding.name}\n"
+
+            if i % 2 == 0:
+                max_text_from_left = max(max_text_from_left, len(binding_text))
+                left_column.append(binding_text)
+            else:
+                right_column.append(binding_text)
+
+        if i % 2 == 0:
+            left_column.append("\n")
+        else:
+            right_column.append("\n")
+
+    colspan = f"\033[{max_text_from_left}G"
+    right_column = [f"{colspan}{text}" for text in right_column]
+
+    left_column_text = "".join(left_column)
+    right_column_text = "".join(right_column)
+
+    left_lines = left_column_text.splitlines()
+    right_lines = right_column_text.splitlines()
+    max_lines = max(len(left_lines), len(right_lines))
+
+    combined_lines = []
+    for i in range(max_lines):
+        left_line = left_lines[i] if i < len(left_lines) else ""
+        right_line = right_lines[i] if i < len(right_lines) else ""
+        combined_lines.append(f"{left_line:<40} {right_line}")
+
+    return "\n".join(combined_lines)

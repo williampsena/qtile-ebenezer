@@ -18,6 +18,7 @@ tk = "*"
 "ruamel.yaml" = "*"
 click = "*"
 asyncio = "*"
+colorama = "*"
 
 [dev-packages]
 black = "*"

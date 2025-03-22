@@ -78,3 +78,4 @@ Thank you for the Read The Docs open source support. ❤️
 - [shinrai-dotfiles](https://github.com/neo-fetch/shinrai-dotfiles) by neo-fetch
 - [rofi](https://github.com/adi1090x/rofi?tab=readme-ov-file) by adi1090x
 - [rofi-presets](https://github.com/SapuSeven/rofi-presets) by SapuSeven
+- [qtile-multiple-screens](https://sohanglal.github.io/Qtile---make-workspaces-span-across-screens)

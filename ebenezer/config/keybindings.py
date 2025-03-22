@@ -23,6 +23,7 @@ class AppSettingsKeyBinding:
     keys: List[str] = []
     action: str = ""
     command: str = ""
+    group: str = "custom"
 
     def __init__(self, **kwargs):
         """
@@ -35,6 +36,7 @@ class AppSettingsKeyBinding:
         self.keys = kwargs.get("keys", "").split(" ")
         self.action = kwargs.get("action", self.action)
         self.command = kwargs.get("command", self.command)
+        self.group = kwargs.get("group", self.group)
 
 
 def build_keybindings(items: List[dict]) -> List[AppSettingsKeyBinding]:
