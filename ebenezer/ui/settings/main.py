@@ -1,3 +1,6 @@
+import signal
+import sys
+
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
@@ -141,8 +144,21 @@ class EbenezerManager(ttk.Frame):
         self._sidebar()
 
 
+def handle_sigint(signal_received, frame):
+    print("\nExiting application...")
+    sys.exit(0)
+
+
 def main():
+    signal.signal(signal.SIGINT, handle_sigint)
+
     app = ttk.Window("ebenezer - configuration manager", themename=THEME_NAME)
-    app.geometry("600x400")
+
+    app.update_idletasks()
+
+    app.geometry("800x600")
+
+    app.update_idletasks()
+
     EbenezerManager(app, theme_name=THEME_NAME)
     app.mainloop()
