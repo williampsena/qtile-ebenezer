@@ -4,6 +4,7 @@ from ebenezer.config.fonts import AppSettingsFonts
 from ebenezer.config.loader import load_raw_test_settings
 from ebenezer.config.lock_screen import AppSettingsLockScreen
 from ebenezer.config.monitoring import AppSettingsMonitoring
+from ebenezer.config.scratchpads import AppSettingsScratchpads
 from ebenezer.config.settings import AppSettings, load_settings
 
 
@@ -124,6 +125,24 @@ def test_parse_settings():
             threshold_high=90,
             burn="yes",
         ),
+        scratchpads=AppSettingsScratchpads(
+            dropdowns={
+                "term": {
+                    "command": "kitty --name dropdown --title dropdown --class dropdown -e zsh",
+                    "args": {
+                        "opacity": 0.9,
+                        "width": 0.7,
+                        "height": 0.7,
+                        "x": 0.15,
+                        "y": 0.15,
+                    },
+                },
+                "browser": {
+                    "command": "firefox",
+                    "args": {"width": 0.7, "height": 0.7, "x": 0.15, "y": 0.15},
+                },
+            }
+        ),
     )
 
     assert settings.environment.__dict__ == expected.environment.__dict__
@@ -137,3 +156,11 @@ def test_parse_settings():
     assert settings.commands == expected.commands
     assert settings.lock_screen.__dict__ == expected.lock_screen.__dict__
     assert settings.monitoring.__dict__ == expected.monitoring.__dict__
+    assert (
+        settings.scratchpads.dropdowns.get("browser").__dict__
+        == expected.scratchpads.dropdowns.get("browser").__dict__
+    )
+    assert (
+        settings.scratchpads.dropdowns.get("term").__dict__
+        == expected.scratchpads.dropdowns.get("term").__dict__
+    )

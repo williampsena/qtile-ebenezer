@@ -12,7 +12,7 @@ Functions:
 from typing import List
 
 from libqtile import qtile
-from libqtile.config import Group, Key
+from libqtile.config import DropDown, Group, Key, ScratchPad
 from libqtile.lazy import lazy
 
 from ebenezer.config.settings import AppSettings
@@ -77,4 +77,25 @@ def build_groups(keys: List, settings: AppSettings):
             ]
         )
 
+    groups.extend(_build_scratchpad(settings))
+
     return groups, keys
+
+
+def _build_scratchpad(settings: AppSettings) -> list[any]:
+    if not settings.scratchpads or not settings.scratchpads.dropdowns:
+        return []
+
+    return [
+        ScratchPad(
+            "scratchpad",
+            [
+                DropDown(
+                    name,
+                    dropdown.command,
+                    **dropdown.args,
+                )
+                for name, dropdown in settings.scratchpads.dropdowns.items()
+            ],
+        )
+    ]

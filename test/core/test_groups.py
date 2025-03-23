@@ -3,6 +3,7 @@ from typing import List
 
 from libqtile.config import Key
 
+from ebenezer.config.scratchpads import AppSettingsScratchpads
 from ebenezer.config.settings import AppSettings
 from ebenezer.core.groups import build_groups
 
@@ -21,6 +22,12 @@ class TestBuildGroups(unittest.TestCase):
             "6": "Video",
             "7": "Misc",
         }
+        settings.scratchpads = AppSettingsScratchpads(
+            dropdowns={
+                "term": {"command": "alacritty", "args": {"width": 0.5}},
+                "browser": {"command": "firefox", "args": {"height": 0.7}},
+            }
+        )
         keys: List[Key] = []
 
         groups, keys = build_groups(keys, settings)

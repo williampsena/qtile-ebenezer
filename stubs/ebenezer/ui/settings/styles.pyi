@@ -1,6 +1,7 @@
-from ebenezer.config.settings import AppSettings as AppSettings
 from tkinter import ttk
 from typing import NamedTuple
+
+from ebenezer.config.settings import AppSettings as AppSettings
 
 class FontStyle(NamedTuple):
     family: str
@@ -22,4 +23,6 @@ class FontStyles(NamedTuple):
     bold_big: FontStyle
 
 def build_fonts(settings: AppSettings): ...
-def build_style(settings: AppSettings, theme_name: str, root: ttk.Frame) -> ttk.Style: ...
+def build_style(
+    settings: AppSettings, theme_name: str, root: ttk.Frame
+) -> ttk.Style: ...

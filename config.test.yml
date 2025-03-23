@@ -141,3 +141,20 @@ bar:
     - type: 'separator'
     - type: 'current_layout'
 
+scratchpads:
+  dropdowns:
+    term:
+      command: kitty --name dropdown --title dropdown --class dropdown -e zsh
+      args:
+        opacity: 0.9
+        width: 0.7
+        height: 0.7
+        x: 0.15
+        y: 0.15
+    browser:
+      command: firefox
+      args:
+        width: 0.7
+        height: 0.7
+        x: 0.15
+        y: 0.15

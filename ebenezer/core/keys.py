@@ -56,6 +56,12 @@ COLOR_KEYBINDING_GROUPS = {
     "laucher": ColorKeybindingGroup(
         "󱓞 laucher", Fore.RED, Back.BLACK, "#FF0000", "#000000"
     ),
+    "layout": ColorKeybindingGroup(
+        "  layout", Fore.MAGENTA, Back.BLACK, "#FF00FF", "#000000"
+    ),
+    "media": ColorKeybindingGroup(
+        "  media", Fore.YELLOW, Back.BLACK, "#FFFF00", "#000000"
+    ),
     "qtile": ColorKeybindingGroup(
         "  qtile", Fore.BLUE, Back.BLACK, "#0000FF", "#000000"
     ),
@@ -231,10 +237,6 @@ def _build_key_toggle_group(settings: AppSettings, binding: AppSettingsKeyBindin
     )
 
 
-def _build_key_focus_group(settings: AppSettings, binding: AppSettingsKeyBinding):
-    return _build_key(_format_keybinding(settings, binding.keys), _focus_group())
-
-
 def _build_key_next_screen(settings: AppSettings, binding: AppSettingsKeyBinding):
     return _build_key(_format_keybinding(settings, binding.keys), lazy.next_screen())
 
@@ -253,9 +255,33 @@ def _build_key_second_screen(settings: AppSettings, binding: AppSettingsKeyBindi
     return _build_key(_format_keybinding(settings, binding.keys), lazy.to_screen(1))
 
 
+def _build_key_dropdown(settings: AppSettings, binding: AppSettingsKeyBinding):
+    """
+    Builds a key binding for toggling a dropdown terminal based on the provided settings and key binding configuration.
+
+    Args:
+        settings (AppSettings): The application settings containing environment configurations.
+        binding (AppSettingsKeyBinding): The key binding configuration.
+
+    Returns:
+        Key: The configured key binding for toggling the dropdown terminal.
+    """
+    dropdown = settings.scratchpads.dropdowns.get(binding.command)
+
+    if dropdown is None:
+        return None
+
+    return _build_key(
+        _format_keybinding(settings, binding.keys),
+        lazy.group["scratchpad"].dropdown_toggle(dropdown.name),
+    )
+
+
 ACTIONS = {
     "browser": _build_key_spawn_browser,
     "cmd": _build_key_spawn_cmd,
+    "dropdown": _build_key_dropdown,
+    "first_screen": _build_key_first_screen,
     "floating": _build_key_floating,
     "focus_down": _build_key_focus_down,
     "focus_left": _build_key_focus_left,
@@ -270,8 +296,11 @@ ACTIONS = {
     "kill_window": _build_key_kill_window,
     "lock_screen": _build_key_lock_screen,
     "next_layout": _build_key_next_layout,
+    "next_screen": _build_key_next_screen,
+    "previous_screen": _build_key_previous_screen,
     "reload_config": _build_key_reload_config,
     "reset_windows": _build_key_reset_windows,
+    "second_screen": _build_key_second_screen,
     "shuffle_down": _build_key_shuffle_down,
     "shuffle_left": _build_key_shuffle_left,
     "shuffle_right": _build_key_shuffle_right,
@@ -281,10 +310,6 @@ ACTIONS = {
     "spawn": _build_key_spawn,
     "terminal": _build_key_spawn_terminal,
     "toggle_group": _build_key_toggle_group,
-    "next_screen": _build_key_next_screen,
-    "previous_screen": _build_key_previous_screen,
-    "first_screen": _build_key_first_screen,
-    "second_screen": _build_key_second_screen,
 }
 
 
@@ -387,6 +412,8 @@ def fetch_keybindings_text(settings: AppSettings | None = None) -> str:
     settings = settings or load_settings_by_files()
     init(autoreset=True)
     print("\033c", end="")
+
+    print(f"🪨  {Fore.LIGHTBLUE_EX}ebenezer keybindings{Style.RESET_ALL}\n")
 
     grouped_keybindings: Dict[str, List[AppSettingsKeyBinding]] = defaultdict(list)
 

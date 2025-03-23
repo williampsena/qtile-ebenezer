@@ -30,6 +30,7 @@ from ebenezer.config.keybindings import AppSettingsKeyBinding, build_keybindings
 from ebenezer.config.loader import load_raw_settings
 from ebenezer.config.lock_screen import AppSettingsLockScreen
 from ebenezer.config.monitoring import AppSettingsMonitoring
+from ebenezer.config.scratchpads import AppSettingsScratchpads
 from ebenezer.core.files import qtile_home
 
 
@@ -63,6 +64,7 @@ class AppSettings:
     keybindings: List[AppSettingsKeyBinding] = []
     lock_screen = AppSettingsLockScreen(**{})
     monitoring: AppSettingsMonitoring = AppSettingsMonitoring(*{})
+    scratchpads: AppSettingsScratchpads = AppSettingsScratchpads(*{})
     startup: dict[str, str] = {}
 
     def __init__(self, **kwargs):
@@ -85,6 +87,7 @@ class AppSettings:
         self.keybindings = kwargs.get("keybindings", self.keybindings)
         self.lock_screen = kwargs.get("lock_screen", self.lock_screen)
         self.monitoring = kwargs.get("monitoring", self.monitoring)
+        self.scratchpads = kwargs.get("scratchpads", self.scratchpads)
         self.startup = kwargs.get("startup", self.startup)
 
 
@@ -143,6 +146,7 @@ def load_settings(raw_settings: dict) -> AppSettings:
     keybindings = raw_settings.get("keybindings")
     lock_screen = raw_settings.get("lock_screen")
     monitoring = raw_settings.get("monitoring")
+    scratchpads = raw_settings.get("scratchpads")
 
     if applications:
         args["applications"] = AppSettingsApplications(**applications)
@@ -167,5 +171,8 @@ def load_settings(raw_settings: dict) -> AppSettings:
 
     if monitoring:
         args["monitoring"] = AppSettingsMonitoring(**monitoring)
+
+    if scratchpads:
+        args["scratchpads"] = AppSettingsScratchpads(**scratchpads)
 
     return AppSettings(**args)

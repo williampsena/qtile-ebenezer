@@ -1,0 +1,10 @@
+{
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json": "file:///home/william/workspace/github/qtile-ebenezer/config.test.yml"
+    }
+}
