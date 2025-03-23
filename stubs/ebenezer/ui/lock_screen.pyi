@@ -1,10 +1,6 @@
 from _typeshed import Incomplete
-
-from ebenezer.config.settings import AppSettings as AppSettings
-from ebenezer.config.settings import load_settings_by_files as load_settings_by_files
-from ebenezer.core.notify import (
-    push_notification_no_history as push_notification_no_history,
-)
+from ebenezer.config.settings import AppSettings as AppSettings, load_settings_by_files as load_settings_by_files
+from ebenezer.core.notify import push_notification_no_history as push_notification_no_history
 from ebenezer.core.requests import request_retry as request_retry
 from ebenezer.core.theme import preload_colors as preload_colors
 
