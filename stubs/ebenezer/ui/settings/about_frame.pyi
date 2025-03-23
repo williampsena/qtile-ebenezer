@@ -1,6 +1,7 @@
-from ttkbootstrap.constants import *
 import ttkbootstrap as ttk
 from _typeshed import Incomplete
+from ttkbootstrap.constants import *
+
 from ebenezer.config.settings import AppSettings as AppSettings
 from ebenezer.ui.settings.styles import build_fonts as build_fonts
 from ebenezer.ui.settings.widgets.label import build_label as build_label

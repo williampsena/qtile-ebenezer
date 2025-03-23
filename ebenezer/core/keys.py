@@ -56,6 +56,9 @@ COLOR_KEYBINDING_GROUPS = {
     "laucher": ColorKeybindingGroup(
         "󱓞 laucher", Fore.RED, Back.BLACK, "#FF0000", "#000000"
     ),
+    "layout": ColorKeybindingGroup(
+        "  layout", Fore.MAGENTA, Back.BLACK, "#FF00FF", "#000000"
+    ),
     "qtile": ColorKeybindingGroup(
         "  qtile", Fore.BLUE, Back.BLACK, "#0000FF", "#000000"
     ),
