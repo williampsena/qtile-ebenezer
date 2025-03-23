@@ -52,7 +52,7 @@ def test_parse_settings():
             "dunst": "pkill dunst && dunst &",
         },
         floating={
-            "title": [],
+            "title": ["ebenezer - configuration manager"],
             "wm_class": [
                 "pavucontrol",
                 "gnome-calculator",

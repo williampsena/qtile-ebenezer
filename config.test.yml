@@ -45,7 +45,8 @@ floating:
   wm_class:
     - pavucontrol
     - gnome-calculator
-  title: []
+  title:
+    - ebenezer - configuration manager
 
 fonts:
   font: Fira Code Nerd Font Bold

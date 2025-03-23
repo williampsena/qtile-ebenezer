@@ -16,7 +16,7 @@ from libqtile.config import Match
 from libqtile.layout.base import Layout as BaseLayout
 from libqtile.log_utils import logger
 
-from ebenezer.config.settings import AppSettings
+from ebenezer.config.settings import AppSettings, load_settings_by_files
 
 LAYOUTS: Dict[str, Callable[[AppSettings, Dict[str, Any]], BaseLayout]] = {
     "bsp": lambda _, args: layout.Bsp(**args),
@@ -32,10 +32,10 @@ LAYOUTS: Dict[str, Callable[[AppSettings, Dict[str, Any]], BaseLayout]] = {
             Match(wm_class="maketag"),  # gitk
             Match(wm_class="ssh-askpass"),  # ssh-askpass
             Match(title="branchdialog"),  # gitk
-            Match(title="pinentry"),  # GPG key password entry
-        ]
-        + [Match(title=f) for f in settings.floating["wm_class"]]
-        + [Match(wm_class=f) for f in settings.floating["title"]],
+            Match(title="pinentry"),  # GPG key password entry,
+            *[Match(wm_class=f) for f in settings.floating.get("wm_class", [])],
+            *[Match(title=f) for f in settings.floating.get("title", [])],
+        ],
     ),
     "max": lambda _, args: layout.Max(**({"border_width": 0, "margin": 0} | args)),
     "matrix": lambda _, args: layout.Matrix(**args),
@@ -95,3 +95,16 @@ def build_layouts(settings: AppSettings):
         layouts.append(fn_layout(settings, default_args | settings.layouts.get(l, {})))
 
     return layouts
+
+
+def set_floating_window(window):
+    settings = load_settings_by_files()
+
+    rules = [
+        *[Match(wm_class=f) for f in settings.floating.get("wm_class", [])],
+        *[Match(title=f) for f in settings.floating.get("title", [])],
+    ]
+
+    for rule in rules:
+        if window.match(rule):
+            window.floating = True
