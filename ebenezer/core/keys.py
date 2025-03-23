@@ -412,7 +412,6 @@ def fetch_keybindings_text(settings: AppSettings | None = None) -> str:
     settings = settings or load_settings_by_files()
     init(autoreset=True)
     print("\033c", end="")
-
     print(f"🪨  {Fore.LIGHTBLUE_EX}ebenezer keybindings{Style.RESET_ALL}\n")
 
     grouped_keybindings: Dict[str, List[AppSettingsKeyBinding]] = defaultdict(list)

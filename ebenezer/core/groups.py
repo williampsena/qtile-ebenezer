@@ -92,7 +92,7 @@ def _build_scratchpad(settings: AppSettings) -> list[any]:
             [
                 DropDown(
                     name,
-                    dropdown.command,
+                    settings.commands.get(dropdown.command, dropdown.command),
                     **dropdown.args,
                 )
                 for name, dropdown in settings.scratchpads.dropdowns.items()
