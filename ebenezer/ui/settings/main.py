@@ -12,7 +12,7 @@ from ebenezer.ui.settings.environment_frame import EnvironmentFrame
 from ebenezer.ui.settings.styles import build_fonts, build_style
 from ebenezer.ui.settings.wallpaper_frame import WallpaperFrame
 
-THEME_NAME = "superhero"
+THEME_NAME = "darkly"
 
 
 class EbenezerManager(ttk.Frame):
@@ -32,7 +32,8 @@ class EbenezerManager(ttk.Frame):
         self.settings = apply_theme_color(self.settings)
 
     def _close_window(self):
-        self.quit()
+        self.master.destroy()
+        sys.exit(0)
 
     def _handle_change_tab(
         self, tab_name: str, buttons: dict[str, ttk.Button]
@@ -48,6 +49,7 @@ class EbenezerManager(ttk.Frame):
 
     def _sidebar(self):
         tabs = {
+            "about": {"label": " ", "build": self._build_about_tab},
             "appearance": {
                 "label": " ",
                 "build": self._build_appearance_tab,
@@ -60,7 +62,6 @@ class EbenezerManager(ttk.Frame):
                 "label": "󰘦 ",
                 "build": self._build_environment_tab,
             },
-            "about": {"label": " ", "build": self._build_about_tab},
             "quit": {"label": "󰅙 "},
         }
 
@@ -99,7 +100,7 @@ class EbenezerManager(ttk.Frame):
                 "<Button-1>", self._handle_change_tab(tab_name, buttons=buttons)
             )
 
-        self._handle_change_tab("appearance", buttons=buttons)(None)
+        self._handle_change_tab("about", buttons=buttons)(None)
 
     def _build_appearance_tab(self, parent: ttk.Frame):
         return AppearanceFrame(
@@ -153,12 +154,10 @@ def main():
     signal.signal(signal.SIGINT, handle_sigint)
 
     app = ttk.Window("ebenezer - configuration manager", themename=THEME_NAME)
-
     app.update_idletasks()
 
-    app.geometry("800x600")
-
-    app.update_idletasks()
+    app.wm_minsize(1000, 600)
+    app.geometry("1000x600")
 
     EbenezerManager(app, theme_name=THEME_NAME)
     app.mainloop()
