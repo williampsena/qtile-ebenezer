@@ -1,10 +1,8 @@
-from typing import Any
-
 import ttkbootstrap as ttk
 from _typeshed import Incomplete
-
 from ebenezer.config.settings import AppSettings as AppSettings
 from ebenezer.ui.settings.styles import build_fonts as build_fonts
+from typing import Any
 
 class ResultMessageWidget(ttk.Label):
     settings: Incomplete
