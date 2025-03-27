@@ -127,7 +127,7 @@ def build_layouts(settings: AppSettings):
     layouts = []
 
     default_args = {
-        "border_width": 4,
+        "border_width": 2,
         "margin": 8,
         "border_focus": settings.colors.border_color_normal,
         "border_normal": settings.colors.border_color_active,
