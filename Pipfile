@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "*"
 qtile = "*"
 pillow = "*"
 psutil = "*"
@@ -19,6 +18,7 @@ tk = "*"
 click = "*"
 asyncio = "*"
 colorama = "*"
+requests = "*"
 
 [dev-packages]
 black = "*"
