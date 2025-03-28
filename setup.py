@@ -13,7 +13,7 @@ setup(
     include_package_data=True,
     package_data={"ebenezer": ["py.typed"]},
     install_requires=[
-        "requests>=2.34.0",
+        "requests>=2.32.3",
         "qtile>=0.30.0",
         "pillow>=11.1.0",
         "psutil>=6.2.0",

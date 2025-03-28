@@ -5,6 +5,8 @@ include MANIFEST.in
 
 exclude coverage
 exclude .readthedocs.yaml
+exclude .github
+exclude .vscode
 
 graft test
 
