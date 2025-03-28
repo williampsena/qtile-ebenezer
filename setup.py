@@ -18,7 +18,7 @@ setup(
         "pillow>=11.1.0",
         "psutil>=6.2.0",
         "ruamel.yaml>=0.17.0",
-        "cairocffi>=1.8.0",
+        "cairocffi>=1.7.1",
         "click>=8.0.0",
     ],
     entry_points={

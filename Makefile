@@ -118,3 +118,6 @@ aur-deploy:
 	$(MAKE) aur-push
 
 .PHONY: precommit leaks-history leaks truncate-logs logs docs-clean docs-locally deploy test install clean
+
+setup-local:
+	python setup.py sdist bdist_wheel
