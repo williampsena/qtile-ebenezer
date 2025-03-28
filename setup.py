@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="qtile-ebenezer",
-    version="0.1.33",
+    version="0.1.34",
     description="This repository provides a collection of widgets and behaviors spanning Desktop to Qtile Tiling Window Manager.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -20,6 +20,7 @@ setup(
         "ruamel.yaml>=0.17.0",
         "cairocffi>=1.7.1",
         "click>=8.0.0",
+        "colorama>=0.4.6",
     ],
     entry_points={
         "console_scripts": [
