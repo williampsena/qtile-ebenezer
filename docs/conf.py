@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.abspath(".."))
 project = "Qtile Ebenezer"
 copyright = "2024, William Sena"
 author = "William Sena"
-release = "0.1.34"
+release = "0.1.35"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
