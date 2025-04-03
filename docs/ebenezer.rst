@@ -10,6 +10,8 @@ Subpackages
    ebenezer.commands
    ebenezer.config
    ebenezer.core
+   ebenezer.rofi
+   ebenezer.ui
    ebenezer.widgets
 
 Module contents

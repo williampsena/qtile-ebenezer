@@ -4,6 +4,14 @@ ebenezer.commands package
 Submodules
 ----------
 
+ebenezer.commands.app module
+----------------------------
+
+.. automodule:: ebenezer.commands.app
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ebenezer.commands.backlight module
 ----------------------------------
 
@@ -12,10 +20,26 @@ ebenezer.commands.backlight module
    :undoc-members:
    :show-inheritance:
 
-ebenezer.commands.ebenezer module
+ebenezer.commands.helpers module
+--------------------------------
+
+.. automodule:: ebenezer.commands.helpers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ebenezer.commands.keyboard module
 ---------------------------------
 
-.. automodule:: ebenezer.commands.ebenezer
+.. automodule:: ebenezer.commands.keyboard
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ebenezer.commands.ui module
+---------------------------
+
+.. automodule:: ebenezer.commands.ui
    :members:
    :undoc-members:
    :show-inheritance:

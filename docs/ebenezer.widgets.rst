@@ -1,6 +1,14 @@
 ebenezer.widgets package
 ========================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ebenezer.widgets.helpers
+
 Submodules
 ----------
 
@@ -100,14 +108,6 @@ ebenezer.widgets.layout module
    :undoc-members:
    :show-inheritance:
 
-ebenezer.widgets.lock\_screen module
-------------------------------------
-
-.. automodule:: ebenezer.widgets.lock_screen
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 ebenezer.widgets.logo module
 ----------------------------
 
@@ -136,6 +136,14 @@ ebenezer.widgets.powermenu module
 ---------------------------------
 
 .. automodule:: ebenezer.widgets.powermenu
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ebenezer.widgets.settings module
+--------------------------------
+
+.. automodule:: ebenezer.widgets.settings
    :members:
    :undoc-members:
    :show-inheritance:

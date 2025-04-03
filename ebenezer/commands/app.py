@@ -1,3 +1,25 @@
+"""
+ebenezer.commands.app
+===================
+This module provides a command-line interface (CLI) for the ebenezer application.
+It uses the Click library to create a command group and add various subcommands
+for different functionalities such as backlight, wallpaper, volume, UI, and keyboard settings.
+
+The CLI also includes a version option that displays the current version of the ebenezer application.
+
+Usage:
+    To run the CLI, execute the following command in the terminal:
+    python -m ebenezer.commands.app [OPTIONS] COMMAND [ARGS]...
+    You can also use the following command to display the version:
+    python -m ebenezer.commands.app --version
+Subcommands:
+    - backlight: Manage the backlight settings.
+    - wallpaper: Manage the wallpaper settings.
+    - volume: Manage the volume settings.
+    - ui: Manage the UI settings.
+    - keyboard: Manage the keyboard settings.
+"""
+
 import importlib
 
 import click

@@ -17,6 +17,7 @@ from libqtile.layout.base import Layout as BaseLayout
 from libqtile.log_utils import logger
 
 from ebenezer.config.settings import AppSettings, load_settings_by_files
+from ebenezer.widgets.helpers.args import build_widget_args
 
 """
 CENTER_WINDOWS_TITLES
@@ -140,7 +141,14 @@ def build_layouts(settings: AppSettings):
             logger.warning(f"Unknown layout: {l}")
             continue
 
-        layouts.append(fn_layout(settings, default_args | settings.layouts.get(l, {})))
+        args = build_widget_args(
+            settings,
+            default_args,
+            settings.layouts.get(l, {}),
+            ["border_normal", "border_focus"],
+        )
+
+        layouts.append(fn_layout(settings, args))
 
     return layouts
 

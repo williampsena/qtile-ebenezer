@@ -76,6 +76,14 @@ ebenezer.config.monitoring module
    :undoc-members:
    :show-inheritance:
 
+ebenezer.config.scratchpads module
+----------------------------------
+
+.. automodule:: ebenezer.config.scratchpads
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ebenezer.config.settings module
 -------------------------------
 

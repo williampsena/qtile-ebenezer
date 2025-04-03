@@ -1,3 +1,25 @@
+"""
+This module provides a custom Qtile widget for monitoring memory usage with color-coded thresholds.
+
+Classes:
+    ColorizedMemoryWidget:
+        A widget that displays memory usage with customizable color thresholds for different usage levels.
+
+Functions:
+    build_memory_widget(settings: AppSettings, kwargs: dict) -> list:
+        Constructs a memory widget for the Qtile status bar with customizable settings and arguments.
+
+Dependencies:
+    - psutil: Used to retrieve system memory usage statistics.
+    - libqtile.widget.Memory: Base class for the custom memory widget.
+    - ebenezer.config.settings.AppSettings: Provides application settings for fonts, colors, and thresholds.
+    - ebenezer.widgets.formatter.burn_text: Utility function for formatting text.
+    - ebenezer.widgets.helpers.args.build_widget_args: Helper function to build widget arguments.
+
+Usage:
+    Import this module and use the `build_memory_widget` function to create a memory widget for the Qtile status bar.
+"""
+
 import psutil
 from libqtile import widget
 from libqtile.widget import Memory

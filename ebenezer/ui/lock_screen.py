@@ -1,3 +1,18 @@
+"""
+This module provides functionality for creating and customizing a lock screen using i3lock.
+It includes features such as fetching jokes from various providers, creating a background
+image with a joke overlay, and customizing the lock screen's appearance with different fonts,
+colors, and sizes.
+
+Constants:
+----------
+- OUTPUT_FILE: Path to the temporary output file for the lock screen background.
+- QUOTE_OUTPUT_FILE: Path to the temporary output file for the joke overlay.
+- JOKE_CACHE_FILE: Path to the cache file for jokes.
+- NO_JOKES: Default message when no jokes are available.
+- CACHE_FILE_LIMIT: Time limit (in seconds) for cache validity.
+"""
+
 import json
 import random
 import re
@@ -34,18 +49,18 @@ def _is_i3lock_running():
 def _remove_emojis(text):
     emoji_pattern = re.compile(
         "["  # Start of character class
-        "\U0001F600-\U0001F64F"  # emoticons
-        "\U0001F300-\U0001F5FF"  # symbols & pictographs
-        "\U0001F680-\U0001F6FF"  # transport & map symbols
-        "\U0001F700-\U0001F77F"  # alchemical symbols
-        "\U0001F780-\U0001F7FF"  # Geometric Shapes Extended
-        "\U0001F800-\U0001F8FF"  # Supplemental Arrows-C
-        "\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
-        "\U0001FA00-\U0001FA6F"  # Chess Symbols
-        "\U00002700-\U000027BF"  # Dingbats
-        "\u2600-\u26FF"  # Misc symbols
-        "\u2700-\u27BF"  # Dingbats
-        "\u2B50"  # Star
+        "\U0001f600-\U0001f64f"  # emoticons
+        "\U0001f300-\U0001f5ff"  # symbols & pictographs
+        "\U0001f680-\U0001f6ff"  # transport & map symbols
+        "\U0001f700-\U0001f77f"  # alchemical symbols
+        "\U0001f780-\U0001f7ff"  # Geometric Shapes Extended
+        "\U0001f800-\U0001f8ff"  # Supplemental Arrows-C
+        "\U0001f900-\U0001f9ff"  # Supplemental Symbols and Pictographs
+        "\U0001fa00-\U0001fa6f"  # Chess Symbols
+        "\U00002700-\U000027bf"  # Dingbats
+        "\u2600-\u26ff"  # Misc symbols
+        "\u2700-\u27bf"  # Dingbats
+        "\u2b50"  # Star
         "]+",
         flags=re.UNICODE,
     )
@@ -354,6 +369,14 @@ def main(
     settings: AppSettings | None = None,
     startup: bool = False,
 ):
+    """
+        Main function to handle the lock screen behavior.
+    Args:
+        settings (AppSettings | None, optional): The application settings object.
+            If not provided, settings will be loaded from files and preloaded with colors.
+        startup (bool, optional): A flag indicating whether the function is being
+            called during startup. Defaults to False."
+    """
     settings = load_settings_by_files()
     settings = preload_colors(settings, complete=False)
 

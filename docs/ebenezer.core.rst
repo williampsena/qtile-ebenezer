@@ -44,6 +44,14 @@ ebenezer.core.keys module
    :undoc-members:
    :show-inheritance:
 
+ebenezer.core.layout module
+---------------------------
+
+.. automodule:: ebenezer.core.layout
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ebenezer.core.notify module
 ---------------------------
 
