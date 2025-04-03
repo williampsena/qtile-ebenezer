@@ -101,6 +101,6 @@ def build_cpu_widget(settings: AppSettings, kwargs: dict):
     args = build_widget_args(settings, default_args, kwargs.get("sensor", {}))
 
     return [
-        widget.TextBox(f"{icon_args.pop("text", "")} ", **icon_args),
+        widget.TextBox(f"{icon_args.pop('text', '')} ", **icon_args),
         ColorizedCPUWidget(**args),
     ]

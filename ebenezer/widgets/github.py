@@ -136,7 +136,7 @@ def _build_github_icon_widget(settings: AppSettings, kwargs: dict):
 
     icon_args = build_widget_args(settings, default_icon_args, kwargs)
 
-    return widget.TextBox(f"{icon_args.pop("text", "")}", **icon_args)
+    return widget.TextBox(f"{icon_args.pop('text', '')}", **icon_args)
 
 
 def _go_to_notifications_url(settings: AppSettings):

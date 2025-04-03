@@ -129,6 +129,6 @@ def build_memory_widget(settings: AppSettings, kwargs: dict):
     )
 
     return [
-        widget.TextBox(f"{icon_args.pop("text", "󰄧")} ", **icon_args),
+        widget.TextBox(f"{icon_args.pop('text', '󰄧')} ", **icon_args),
         ColorizedMemoryWidget(**args),
     ]

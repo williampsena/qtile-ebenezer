@@ -1,3 +1,0 @@
-from ebenezer.rofi.modals.confirm import confirm_cmd as confirm_cmd
-
-def main() -> None: ...

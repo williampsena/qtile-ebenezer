@@ -1,3 +1,0 @@
-from ebenezer.config.settings import AppSettings as AppSettings
-
-def build_clock_widget(settings: AppSettings, kwargs: dict): ...

@@ -141,7 +141,7 @@ def _get_joke_from_reddit(settings: AppSettings) -> Callable[[], str]:
             "&amp;#x200B;", "", _remove_emojis(joke_content.get("selftext"))
         )
 
-        return f"{_remove_emojis(joke_content.get("title"))}\n{punchline}"
+        return f"{_remove_emojis(joke_content.get('title'))}\n{punchline}"
 
     return _inner
 

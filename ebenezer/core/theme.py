@@ -166,7 +166,7 @@ def _extract_rasi_colors(colors: AppSettingsColors) -> str:
         str: The extracted Rasi colors as a string.
     """
     colors_list = [
-        f"    {color.replace("_", "-")}: {value};"
+        f"    {color.replace('_', '-')}: {value};"
         for color, value in colors.raw.items()
     ]
     return "\n".join(colors_list)

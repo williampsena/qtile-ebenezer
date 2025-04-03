@@ -22,7 +22,6 @@ requests = "*"
 
 [dev-packages]
 black = "*"
-autoflake = "*"
 isort = "*"
 types-pyyaml = "*"
 types-psutil = "*"
@@ -43,6 +42,8 @@ furo = "*"
 setuptools-scm = "*"
 build = "*"
 installer = "*"
+exceptiongroup = "*"
+autoflake = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "3.10"
