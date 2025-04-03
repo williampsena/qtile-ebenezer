@@ -14,11 +14,11 @@ mypy = "*"
 installer = "*"
 ttkbootstrap = "*"
 tk = "*"
-"ruamel.yaml" = "*"
 click = "*"
 asyncio = "*"
 colorama = "*"
 requests = "*"
+"ruamel.yaml" = "*"
 
 [dev-packages]
 black = "*"
@@ -45,4 +45,4 @@ build = "*"
 installer = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
