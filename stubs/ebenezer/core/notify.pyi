@@ -1,0 +1,9 @@
+from ebenezer.core.command import run_shell_command as run_shell_command
+
+TEMPLATE_NOTIFY: str
+TEMPLATE_WITH_TITLE: str
+TEMPLATE_NO_HISTORY: str
+
+def push_notification(title: str, message: str): ...
+def push_notification_progress(message: str, progress: int): ...
+def push_notification_no_history(title: str, message: str): ...

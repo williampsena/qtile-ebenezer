@@ -1,0 +1,13 @@
+from _typeshed import Incomplete
+from ebenezer.config.settings import AppSettings as AppSettings, load_settings_by_files as load_settings_by_files
+from ebenezer.widgets.helpers.args import build_widget_args as build_widget_args
+from libqtile.layout.base import Layout as BaseLayout
+from typing import Any, Callable
+
+CENTER_WINDOWS_TITLES: Incomplete
+LAYOUTS: dict[str, Callable[[AppSettings, dict[str, Any]], BaseLayout]]
+
+def build_layouts(settings: AppSettings): ...
+def set_floating_window(window) -> None: ...
+def centralize_window(settings: AppSettings, window): ...
+def is_ebenezer_window(window): ...
