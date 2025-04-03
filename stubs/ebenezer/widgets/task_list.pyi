@@ -1,5 +1,6 @@
-from ebenezer.config.settings import AppSettings as AppSettings
 from libqtile import widget
+
+from ebenezer.config.settings import AppSettings as AppSettings
 
 class FontIconTaskList(widget.TaskList):
     markup: bool

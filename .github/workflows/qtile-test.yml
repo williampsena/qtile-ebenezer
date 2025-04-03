@@ -2,6 +2,7 @@ name: Qtile Tests
 run-name: Qtile tests in [${{ github.ref_name }}] @${{ github.actor }}
 
 on: 
+  workflow_dispatch:
   push:
     branches:
       - main
